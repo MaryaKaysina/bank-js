@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="app">
+    <header class="header">
+      <div class="container">
+        <a href="/" class="header__link">Coin.</a>
+      </div>
+    </header>
+    <main class="main">
+      <form class="form">
+        <h2 class="form__title">Вход в аккаунт</h2>
+        <label class="form__label">
+          Логин
+          <input type="text" class="form__input error" name="login" placeholder="Введите логин">
+          <span class="message error hidden">Error message</span>
+        </label>
+        <label class="form__label">
+          Пароль
+          <input type="password" class="form__input success" name="password" placeholder="Введите пароль">
+          <span class="message success hidden">Success message</span>
+        </label>
+        <button class="form__btn">
+          Войти
+          <span class="message auth error">Error message</span>
+        </button>
+      </form>
+    </main>
+  </div>
+</body>
+</html>
