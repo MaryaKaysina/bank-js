@@ -1,62 +1,64 @@
+@import "skeleton-screen-css/dist/index.scss";
+
 @font-face {
   font-family: Ubuntu;
-  src: url('../frontend/src/fonts/Ubuntu-Light.ttf');
+  src: url('../../fonts/Ubuntu-Light.ttf');
   font-weight: 300;
   font-display: swap;
 }
 
 @font-face {
   font-family: Ubuntu;
-  src: url('../frontend/src/fonts/Ubuntu-Regular.ttf');
+  src: url('../../fonts/Ubuntu-Regular.ttf');
   font-weight: 400;
   font-display: swap;
 }
 
 @font-face {
   font-family: Ubuntu;
-  src: url('../frontend/src/fonts/Ubuntu-Medium.ttf');
+  src: url('../../fonts/Ubuntu-Medium.ttf');
   font-weight: 500;
   font-display: swap;
 }
 
 @font-face {
   font-family: Ubuntu;
-  src: url('../frontend/src/fonts/Ubuntu-Bold.ttf');
+  src: url('../../fonts/Ubuntu-Bold.ttf');
   font-weight: 700;
   font-display: swap;
 }
 
 @font-face {
   font-family: 'Work Sans';
-  src: url('../frontend/src/fonts/WorkSans-Light.ttf');
+  src: url('../../fonts/WorkSans-Light.ttf');
   font-weight: 300;
   font-display: swap;
 }
 
 @font-face {
   font-family: 'Work Sans';
-  src: url('../frontend/src/fonts/WorkSans-Regular.ttf');
+  src: url('../../fonts/WorkSans-Regular.ttf');
   font-weight: 400;
   font-display: swap;
 }
 
 @font-face {
   font-family: 'Work Sans';
-  src: url('../frontend/src/fonts/WorkSans-Medium.ttf');
+  src: url('../../fonts/WorkSans-Medium.ttf');
   font-weight: 500;
   font-display: swap;
 }
 
 @font-face {
   font-family: 'Work Sans';
-  src: url('../frontend/src/fonts/WorkSans-SemiBold.ttf');
+  src: url('../../fonts/WorkSans-SemiBold.ttf');
   font-weight: 600;
   font-display: swap;
 }
 
 @font-face {
   font-family: 'Work Sans';
-  src: url('../frontend/src/fonts/WorkSans-Bold.ttf');
+  src: url('../../fonts/WorkSans-Bold.ttf');
   font-weight: 700;
   font-display: swap;
 }
@@ -91,7 +93,7 @@ html {
   align-items: center;
 }
 
-.header {
+.header--cards {
   margin-bottom: 22px;
   background: #116ACC;
   box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.25);
@@ -127,13 +129,14 @@ html {
   background: #A0C3FF;
 }
 
-.main {
+.main--cards {
   font-family: Ubuntu;
 }
 
-.block {
+.block--cards {
   display: flex;
   margin-bottom: 50px;
+  align-items: center;
 }
 
 .title {
@@ -158,7 +161,7 @@ html {
   font-size: 16px;
   letter-spacing: -0.01em;
   color: #FFFFFF;
-  background-image: url('../frontend/src/assets/add.svg');
+  background-image: url('../../assets/add.svg');
   background-repeat: no-repeat;
   background-position: 17px center;
   cursor: pointer;
@@ -306,6 +309,7 @@ html {
   background: #FFFFFF;
   border-radius: 7px;
   filter: drop-shadow(0px 5px 20px rgba(0, 0, 0, 0.25));
+  transition: opacity .3s ease-in-out, z-index .3s ease-in-out;
 }
 
 .sort__item {
@@ -327,7 +331,7 @@ html {
 }
 
 .sort__item.active {
-  background-image: url('../frontend/src/assets/check.svg')
+  background-image: url('../../assets/check.svg')
 }
 
 .sort.active::after {

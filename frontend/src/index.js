@@ -5,11 +5,70 @@ import {
   validateAuthorization,
   fetchAuth,
 } from './components/authorization/authorization';
-import { getCards } from './components/cards/cards';
+import {
+  getCards,
+  cardsLoader,
+  cards,
+  createAccount,
+  cardsSorted,
+} from './components/cards/cards';
 
-setChildren(document.body, authorizationLoader());
+function cardsPage(cardsList, auth, sort = '') {
+  setChildren(document.body, cardsLoader());
 
-setTimeout(() => {
+  setTimeout(() => {
+    setChildren(document.body, cards(cardsList));
+
+    const btnNewAccount = document.querySelector('.create');
+    btnNewAccount.addEventListener('click', async () => {
+      try {
+        await createAccount(auth);
+      } catch (err) {
+        console.log(err);
+      }
+    });
+
+    const sortBlock = document.querySelector('.sort');
+    const sortTitle = sortBlock.querySelector('.sort__title');
+    const sortList = sortBlock.querySelector('.sort__list');
+    const sortItems = sortBlock.querySelectorAll('.sort__item');
+
+    sortItems.forEach((item) => {
+      if (item.dataset.sort === sort) {
+        item.classList.add('active');
+      }
+    });
+
+    sortTitle.addEventListener('click', () => {
+      sortBlock.classList.toggle('active');
+      sortList.classList.toggle('is-hide');
+
+      const sortItems = sortBlock.querySelectorAll('.sort__item');
+      sortItems.forEach((item) => {
+        item.addEventListener('click', () => {
+          sortItems.forEach((item) => {
+            item.classList.remove('active');
+          });
+          item.classList.add('active');
+          setChildren(document.body, cardsSorted(cardsList, item.dataset.sort));
+          cardsPage(cardsList, auth, item.dataset.sort);
+        });
+      });
+
+      document.addEventListener('click', (e) => {
+        if (e.target.classList.contains('sort__title')) return;
+        if (!e.target.closest('.sort__list')) {
+          sortBlock.classList.remove('active');
+          sortList.classList.add('is-hide');
+        }
+      });
+    });
+  }, 1000);
+}
+
+function authorizationPage() {
+  setChildren(document.body, authorizationLoader());
+
   setChildren(document.body, authorization());
 
   const loginInput = document.querySelector('input[name="login"]');
@@ -70,8 +129,8 @@ setTimeout(() => {
       };
       try {
         const token = await fetchAuth(auth);
-        console.log(token.token);
-        getCards(token.token);
+        const cards = await getCards(token.token);
+        cardsPage(cards, token.token);
       } catch (err) {
         btnError.classList.add('error');
         btnError.textContent = err.message;
@@ -79,4 +138,6 @@ setTimeout(() => {
       }
     }
   });
-}, 1000);
+}
+
+authorizationPage();

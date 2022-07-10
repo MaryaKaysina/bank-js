@@ -10,28 +10,105 @@
 <body>
   <div id="app">
     <header class="header">
-      <div class="container">
+      <div class="container container--header">
         <a href="/" class="header__link">Coin.</a>
+        <nav class="header__nav nav">
+          <button class="nav__btn">Банкоматы</button>
+          <button class="nav__btn active">Счета</button>
+          <button class="nav__btn">Валюта</button>
+          <button class="nav__btn">Выйти</button>
+        </nav>
       </div>
     </header>
     <main class="main">
-      <form class="form">
-        <h2 class="form__title">Вход в аккаунт</h2>
-        <label class="form__label">
-          Логин
-          <input type="text" class="form__input error" name="login" placeholder="Введите логин">
-          <span class="message error hidden">Error message</span>
-        </label>
-        <label class="form__label">
-          Пароль
-          <input type="password" class="form__input success" name="password" placeholder="Введите пароль">
-          <span class="message success hidden">Success message</span>
-        </label>
-        <button class="form__btn">
-          Войти
-          <span class="message auth error">Error message</span>
-        </button>
-      </form>
+      <div class="container">
+        <div class="block">
+          <h2 class="title">Ваши счета</h2>
+          <div class="sort active">
+            <h3 class="sort__title">Сортировка</h3>
+            <ul class="sort__list is-hide">
+              <li class="sort__item" data-sort="number">По номеру</li>
+              <li class="sort__item active" data-sort="balance">По балансу</li>
+              <li class="sort__item" data-sort="transaction">По последней транзакции</li>
+            </ul>
+          </div>
+          <button class="create">Создать новый счёт</button>
+        </div>
+        <div class="cards">
+          <div class="card">
+            <h3 class="number">123456788932021</h3>
+            <p class="balance">3 523 ₽</p>
+            <p class="text">Последняя транзакция:<br>
+              <span class="date">21 августа 2021</span>
+            </p>
+            <button class="open">Открыть</button>
+          </div>
+          <div class="card">
+            <h3 class="number">123456788932021</h3>
+            <p class="balance">3 523 ₽</p>
+            <p class="text">Последняя транзакция:<br>
+              <span class="date">21 августа 2021</span>
+            </p>
+            <button class="open">Открыть</button>
+          </div>
+          <div class="card">
+            <h3 class="number">123456788932021</h3>
+            <p class="balance">3 523 ₽</p>
+            <p class="text">Последняя транзакция:<br>
+              <span class="date">21 августа 2021</span>
+            </p>
+            <button class="open">Открыть</button>
+          </div>
+          <div class="card">
+            <h3 class="number">123456788932021</h3>
+            <p class="balance">3 523 ₽</p>
+            <p class="text">Последняя транзакция:<br>
+              <span class="date">21 августа 2021</span>
+            </p>
+            <button class="open">Открыть</button>
+          </div>
+          <div class="card">
+            <h3 class="number">123456788932021</h3>
+            <p class="balance">3 523 ₽</p>
+            <p class="text">Последняя транзакция:<br>
+              <span class="date">21 августа 2021</span>
+            </p>
+            <button class="open">Открыть</button>
+          </div>
+          <div class="card">
+            <h3 class="number">123456788932021</h3>
+            <p class="balance">3 523 ₽</p>
+            <p class="text">Последняя транзакция:<br>
+              <span class="date">21 августа 2021</span>
+            </p>
+            <button class="open">Открыть</button>
+          </div>
+          <div class="card">
+            <h3 class="number">123456788932021</h3>
+            <p class="balance">3 523 ₽</p>
+            <p class="text">Последняя транзакция:<br>
+              <span class="date">21 августа 2021</span>
+            </p>
+            <button class="open">Открыть</button>
+          </div>
+          <div class="card">
+            <h3 class="number">123456788932021</h3>
+            <p class="balance">3 523 ₽</p>
+            <p class="text">Последняя транзакция:<br>
+              <span class="date">21 августа 2021</span>
+            </p>
+            <button class="open">Открыть</button>
+          </div>
+          <div class="card">
+            <h3 class="number">123456788932021</h3>
+            <p class="balance">3 523 ₽</p>
+            <p class="text">Последняя транзакция:<br>
+              <span class="date">21 августа 2021</span>
+            </p>
+            <button class="open">Открыть</button>
+          </div>
+        </div>
+      </div>
     </main>
   </div>
 </body>
