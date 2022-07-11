@@ -83,8 +83,8 @@ html {
 
 .container {
   margin: 0 auto;
-  padding: 22px 50px;
-  max-width: 1340px;
+  padding: 0 15px;
+  max-width: 1370px;
 }
 
 .container--header {
@@ -95,6 +95,7 @@ html {
 
 .header--cards {
   margin-bottom: 22px;
+  padding: 22px 0;
   background: #116ACC;
   box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.25);
 }
@@ -169,16 +170,17 @@ html {
 }
 
 .cards {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 50px 70px;
+  display: flex;
+  gap: 2.5vw 3.64vw;
+  flex-wrap: wrap;
+  margin-bottom: 70px;
 }
 
 .card {
   display: flex;
   flex-wrap: wrap;
   padding: 22px;
-  max-width: 400px;
+  width: 400px;
   background: #FFFFFF;
   box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.25);
   border-radius: 9px;
@@ -342,4 +344,79 @@ html {
 .sort__list.is-hide {
   opacity: 0;
   z-index: -1;
+}
+
+.notifications {
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+}
+
+.notification {
+  position: relative;
+  padding: 12px 24px;
+  padding-right: 55px;
+  border-radius: 7px;
+  min-width: 440px;
+  font-family: 'Ubuntu';
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: -0.01em;
+}
+
+.notification:not(:last-child) {
+  margin-bottom: 10px;
+}
+
+.notification.success {
+  background-color: rgba(119 202 102 / .1);
+  border: 1px solid #76CA66;
+  color: #76CA66;
+}
+
+.notification.error {
+  background-color: rgba(186 0 0 / .1);
+  border: 1px solid #BA0000;
+  color: #BA0000;
+}
+
+.notification.information {
+  background-color: rgba(17 106 204 / .1);
+  border: 1px solid #116ACC;
+  color: #116ACC;
+}
+
+.notification.warning {
+  background-color: rgba(251 199 86 / .1);
+  border: 1px solid #FBC756;
+  color: #FBC756;
+}
+
+.notification-btn {
+  position: absolute;
+  right: 15px;
+  width: 24px;
+  height: 24px;
+  border: none;
+  background-color: transparent;
+  background-repeat: no-repeat;
+  background-size: cover;
+  cursor: pointer;
+}
+
+.notification-btn.success {
+  background-image: url('../../assets/success-close.svg');
+}
+
+.notification-btn.error {
+  background-image: url('../../assets/error-close.svg');
+}
+
+.notification-btn.information {
+  background-image: url('../../assets/info-close.svg');
+}
+
+.notification-btn.warning {
+  background-image: url('../../assets/warning-close.svg');
 }

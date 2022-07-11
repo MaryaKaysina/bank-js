@@ -1,7 +1,7 @@
 import { el } from 'redom';
-import './cards.scss';
+import './accounts.scss';
 
-export function cardsLoader() {
+export function accountsLoader() {
   const app = el('div', {
     id: 'app',
     class: 'ssc ssc-card',
@@ -39,13 +39,12 @@ export function cardsLoader() {
   return app;
 }
 
-export function cards(cards) {
+export function accounts(accounts) {
   const app = el('div', { id: 'app' });
-  let cardsBlock = '';
+  let accountsBlock = '';
 
-  console.log(cards);
-  cards.forEach((item) => {
-    let card = '';
+  accounts.forEach((item) => {
+    let account = '';
     let date = '';
     if (item.transactions.length != 0) {
       date = new Date(item.transactions[0].date)
@@ -59,7 +58,7 @@ export function cards(cards) {
       date = 'Транзакций пока не было';
     }
 
-    card = `<div class="card">
+    account = `<div class="card">
     <h3 class="number">${item.account}</h3>
     <p class="balance">${item.balance} ₽</p>
     <p class="text">Последняя транзакция:<br>
@@ -68,7 +67,7 @@ export function cards(cards) {
     <button class="open">Открыть</button>
     </div>`;
 
-    cardsBlock = cardsBlock + card;
+    accountsBlock = accountsBlock + account;
   });
 
   app.innerHTML = `<header class="header--cards">
@@ -97,7 +96,7 @@ export function cards(cards) {
         <button class="create">Создать новый счёт</button>
       </div>
       <div class="cards">
-      ${cardsBlock}
+      ${accountsBlock}
       </div>
     </div>
   </main>
@@ -106,27 +105,33 @@ export function cards(cards) {
   return app;
 }
 
-export function cardsSorted(cardsList, field) {
-  let newCards = [];
+export function accountsSorted(accountsList, field) {
+  let newAccounts = [];
   if (field === 'number') {
-    newCards = cardsList.sort((a, b) => a.account - b.account);
+    newAccounts = accountsList.sort((a, b) => a.account - b.account);
   }
   if (field === 'balance') {
-    newCards = cardsList.sort((a, b) => a.balance - b.balance);
+    newAccounts = accountsList.sort((a, b) => a.balance - b.balance);
   }
   if (field === 'transaction') {
-    newCards = cardsList.sort((a, b) => {
-      const date1 = a.transactions.length != 0 ? a.transactions[0].date : '0';
-      const date2 = b.transactions.length != 0 ? b.transactions[0].date : '0';
+    newAccounts = accountsList.sort((a, b) => {
+      let date1 = 0;
+      let date2 = 0;
+      if (a.transactions.length != 0) {
+        date1 = new Date(a.transactions[0].date).getTime();
+      }
+      if (b.transactions.length != 0) {
+        date2 = new Date(b.transactions[0].date).getTime();
+      }
       return date1 - date2;
     });
   }
 
-  const app = cards(newCards);
+  const app = accounts(newAccounts);
   return app;
 }
 
-export async function getCards(auth) {
+export async function getAccounts(auth) {
   const response = await fetch('http://localhost:3000/accounts', {
     method: 'GET',
     headers: {
@@ -153,5 +158,5 @@ export async function createAccount(auth) {
   if (data.error) {
     throw Error('Упс, что-то пошло не так... Повторите попытку позже');
   }
-  getCards(auth);
+  getAccounts(auth);
 }
