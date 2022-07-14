@@ -81,8 +81,8 @@ html {
 
 .container {
   margin: 0 auto;
-  padding: 22px 50px;
-  max-width: 1340px;
+  padding: 0 15px;
+  max-width: 1370px;
 }
 
 .container--header {
@@ -93,6 +93,7 @@ html {
 
 .header {
   margin-bottom: 22px;
+  padding: 22px 0;
   background: #116ACC;
   box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.25);
 }
@@ -406,4 +407,344 @@ html {
 }
 .notification-btn.warning {
   background-image: url('../frontend/src/assets/warning-close.svg');
+}
+
+.form__label {
+  position: relative;
+  align-self: end;
+  margin-bottom: 25px;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 20px;
+  letter-spacing: -0.01em;
+  color: #182233;
+}
+
+.form__input {
+  margin-left: 18px;
+  padding: 8px 10px 8px 16px;
+  width: 300px;
+  height: 44px;
+  background: #FFFFFF;
+  border: 1px solid #9CA3AF;
+  border-radius: 7px;
+  font-family: inherit;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  transition: border .3s ease-in-out, background .3s ease-in-out;
+}
+
+.form__input::placeholder {
+  color: #6B7280;
+}
+
+.form__label:last-of-type {
+  margin-bottom: 30px;
+}
+
+.message {
+  position: absolute;
+  top: 10px;
+  left: 105%;
+  padding-left: 30px;
+  width: fit-content;
+  background-repeat: no-repeat;
+  background-position: 0 center;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 20px;
+  letter-spacing: -0.01em;
+}
+
+.message.error {
+  color: #BA0000;
+  background-image: url('../../assets/err-message.svg');
+}
+
+.message.success {
+  color: #76CA66;
+  background-image: url('../../assets/success-message.svg');
+}
+
+.message.hidden {
+  display: none;
+}
+
+/* account detail*/
+
+.block--mb30 {
+  margin-bottom: 30px;
+}
+
+.back,
+.send {
+  margin-right: 0;
+  margin-left: auto;
+  padding: 14px 24px;
+  padding-left: 50px;
+  background: #116ACC;
+  border: none;
+  border-radius: 7px;
+  font-family: 'Ubuntu';
+  font-weight: 500;
+  font-size: 16px;
+  letter-spacing: -0.01em;
+  color: #FFFFFF;
+  background-image: url('../frontend/src/assets/arrow.svg');
+  background-repeat: no-repeat;
+  background-position: 17px center;
+  cursor: pointer;
+  transition: background .3s ease-in-out;
+}
+
+.back:hover,
+.back:focus,
+.send:hover,
+.send:focus {
+  background-color: #5896DB;
+  outline: none;
+}
+
+.back:active,
+.send:active {
+  background-color: #0C4A8F;
+}
+
+.send {
+  margin-right: 29%;
+  background-image: url('../frontend/src/assets/mail.svg');
+}
+
+.back.disable {
+  background-color: #C8CBD2;
+}
+
+.subtitle {
+  font-family: 'Work Sans';
+  font-weight: 400;
+  font-size: 34px;
+  line-height: 40px;
+  letter-spacing: -0.02em;
+  color: #000000;
+}
+
+.balance {
+  margin-right: 0;
+  margin-left: auto;
+  width: auto;
+  font-family: 'Ubuntu';
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 23px;
+  letter-spacing: -0.02em;
+  color: #000000;
+}
+
+.balance span {
+  padding-left: 50px;
+  font-family: 'Work Sans';
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 23px;
+  letter-spacing: -0.02em;
+  color: #000000;
+}
+
+.account {
+  position: relative;
+  width: min-content;
+}
+
+.account__title {
+  padding: 10px 16px;
+  width: 300px;
+  border: 1px solid #116ACC;
+  border-radius: 7px;
+  cursor: pointer;
+  font-family: 'Ubuntu';
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: -0.01em;
+  color: #374151;
+}
+
+.account::after {
+  content: "";
+  position: absolute;
+  height: 0;
+  width: 0;
+  border-style: solid;
+  border-color: #333 transparent transparent transparent;
+  border-width: 5px;
+  position: absolute;
+  right: 21.5px;
+  top: 50%;
+  margin-top: -2.5px;
+  pointer-events: none;
+  transition: transform .3s ease-in-out;
+}
+
+.account__list {
+  position: absolute;
+  margin-top: 2px;
+  padding: 10px 0;
+  width: 100%;
+  list-style: none;
+  background: #FFFFFF;
+  border-radius: 7px;
+  filter: drop-shadow(0px 5px 20px rgba(0, 0, 0, 0.25));
+}
+
+.account__item {
+  padding: 10px 16px;
+  background-repeat: no-repeat;
+  background-position: 94% center;
+  font-family: 'Ubuntu';
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: -0.01em;
+  color: #374151;
+  cursor: pointer;
+  transition: background .3s ease-in-out;
+}
+
+.account__item:hover {
+  background-color: #A0C3FF;
+}
+
+.account.active::after {
+  transform: rotate(180deg);
+  transform-origin: 50% 20%;
+}
+
+.account__list.is-hide {
+  opacity: 0;
+  z-index: -1;
+}
+
+.bg-grey {
+  padding: 25px 50px;
+  background: #F3F4F6;
+  border-radius: 50px;
+}
+
+.tran__title {
+  margin-bottom: 25px;
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 23px;
+  letter-spacing: -0.02em;
+  color: #000000;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+}
+
+.form__row {
+  display: flex;
+  align-items: center;
+  justify-content: end;
+  margin-bottom: 25px;
+}
+
+.block--main {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.tran {
+  width: 45.23%;
+}
+
+.tran {
+  margin-right: 50px;
+  margin-bottom: 50px;
+}
+
+.history {
+  width: 100%;
+}
+
+.form__label--detail,
+.form__label--detail.form__label:last-of-type {
+  margin-bottom: 0;
+  align-self: auto;
+}
+
+.form__row:first-child .form__label--detail {
+  margin-right: 18px;
+}
+
+.bg-wite {
+  padding: 25px 50px;
+  background: #FFFFFF;
+  box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.25);
+  border-radius: 50px;
+}
+
+.dynamic {
+  margin-bottom: 50px;
+  width: 51%;
+}
+
+.table-history {
+  width: 100%;
+}
+
+.thead-history {
+  display: flex;
+  padding: 20px 50px;
+  background: #116ACC;
+  border-radius: 15px;
+  color: #fff;
+  font-family: 'Ubuntu';
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 24px;
+  letter-spacing: -0.01em;
+}
+
+.tbody-history {
+  margin-bottom: 41px;
+}
+
+.row-history {
+  display: flex;
+  padding: 20px 50px;
+  border-bottom: 2px solid rgba(0, 82, 255, 0.1);
+  font-family: 'Ubuntu';
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: -0.01em;
+  color: #374151;
+}
+
+.col-1 {
+  width: 18.7%;
+}
+
+.col-2 {
+  width: 20.1%;
+}
+
+.col-3 {
+  width: 16.1%;
+}
+
+.sum-in {
+  color: #76CA66;
+}
+
+.sum-out {
+  color: #FD4E5D;
+}
+
+.currency {
+  font-family: 'Work Sans';
 }

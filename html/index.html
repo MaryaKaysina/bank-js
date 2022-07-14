@@ -5,6 +5,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -14,104 +15,83 @@
         <a href="/" class="header__link">Coin.</a>
         <nav class="header__nav nav">
           <button class="nav__btn">Банкоматы</button>
-          <button class="nav__btn active">Счета</button>
+          <button class="nav__btn">Счета</button>
           <button class="nav__btn">Валюта</button>
           <button class="nav__btn">Выйти</button>
         </nav>
       </div>
     </header>
-    <main class="main">
+    <main class="main--detail">
       <div class="container">
-        <div class="block">
-          <h2 class="title">Ваши счета</h2>
-          <div class="sort active">
-            <h3 class="sort__title">Сортировка</h3>
-            <ul class="sort__list is-hide">
-              <li class="sort__item" data-sort="number">По номеру</li>
-              <li class="sort__item active" data-sort="balance">По балансу</li>
-              <li class="sort__item" data-sort="transaction">По последней транзакции</li>
-            </ul>
-          </div>
-          <button class="create">Создать новый счёт</button>
+        <div class="block block--mb30">
+          <h2 class="title">Просмотр счёта</h2>
+          <button class="back">Вернуться назад</button>
         </div>
-        <div class="cards">
-          <div class="card">
-            <h3 class="number">123456788932021</h3>
-            <p class="balance">3 523 ₽</p>
-            <p class="text">Последняя транзакция:<br>
-              <span class="date">21 августа 2021</span>
-            </p>
-            <button class="open">Открыть</button>
+        <div class="block">
+          <h3 class="subtitle">№ 12455242373623463</h3>
+          <p class="balance--detail">Баланс <span>31 235 ₽</span></p>
+        </div>
+        <div class="block block--main">
+          <div class="tran bg-grey">
+            <h4 class="tran__title">Новый перевод</h4>
+            <form action="#" class="form">
+              <div class="form__row">
+                <p class="form__label form__label--detail">Номер счёта получателя</p>
+                <div class="account">
+                  <input class="account__title" placeholder="Введите счёт" name="account">
+                  <ul class="account__list is-hide">
+                    <li class="account__item">74213041477477406320783754</li>
+                    <li class="account__item">74213041477477406320783754</li>
+                    <li class="account__item">74213041477477406320783754</li>
+                    <li class="account__item">74213041477477406320783754</li>
+                    <li class="account__item">74213041477477406320783754</li>
+                  </ul>
+                </div>
+              </div>
+              <div class="form__row">
+                <label class="form__label form__label--detail">
+                  Сумма перевода
+                  <input type="text" class="form__input" name="sum" placeholder="Введите сумму">
+                  <span class="message hidden">Error message</span>
+                </label>
+              </div>
+              <button class="send">Отправить</button>
+            </form>
           </div>
-          <div class="card">
-            <h3 class="number">123456788932021</h3>
-            <p class="balance">3 523 ₽</p>
-            <p class="text">Последняя транзакция:<br>
-              <span class="date">21 августа 2021</span>
-            </p>
-            <button class="open">Открыть</button>
+          <div class="dynamic bg-wite">
+            <h4 class="tran__title">Динамика баланса</h4>
+            <div><canvas id="myChart" height="100%"></canvas></div>
           </div>
-          <div class="card">
-            <h3 class="number">123456788932021</h3>
-            <p class="balance">3 523 ₽</p>
-            <p class="text">Последняя транзакция:<br>
-              <span class="date">21 августа 2021</span>
-            </p>
-            <button class="open">Открыть</button>
-          </div>
-          <div class="card">
-            <h3 class="number">123456788932021</h3>
-            <p class="balance">3 523 ₽</p>
-            <p class="text">Последняя транзакция:<br>
-              <span class="date">21 августа 2021</span>
-            </p>
-            <button class="open">Открыть</button>
-          </div>
-          <div class="card">
-            <h3 class="number">123456788932021</h3>
-            <p class="balance">3 523 ₽</p>
-            <p class="text">Последняя транзакция:<br>
-              <span class="date">21 августа 2021</span>
-            </p>
-            <button class="open">Открыть</button>
-          </div>
-          <div class="card">
-            <h3 class="number">123456788932021</h3>
-            <p class="balance">3 523 ₽</p>
-            <p class="text">Последняя транзакция:<br>
-              <span class="date">21 августа 2021</span>
-            </p>
-            <button class="open">Открыть</button>
-          </div>
-          <div class="card">
-            <h3 class="number">123456788932021</h3>
-            <p class="balance">3 523 ₽</p>
-            <p class="text">Последняя транзакция:<br>
-              <span class="date">21 августа 2021</span>
-            </p>
-            <button class="open">Открыть</button>
-          </div>
-          <div class="card">
-            <h3 class="number">123456788932021</h3>
-            <p class="balance">3 523 ₽</p>
-            <p class="text">Последняя транзакция:<br>
-              <span class="date">21 августа 2021</span>
-            </p>
-            <button class="open">Открыть</button>
-          </div>
-          <div class="card">
-            <h3 class="number">123456788932021</h3>
-            <p class="balance">3 523 ₽</p>
-            <p class="text">Последняя транзакция:<br>
-              <span class="date">21 августа 2021</span>
-            </p>
-            <button class="open">Открыть</button>
+          <div class="history bg-grey">
+            <h4 class="tran__title">История переводов</h4>
+            <div class="table-history">
+              <div class="thead-history">
+                <span class="col-1 thead-out">Счёт отправителя</span>
+                <span class="col-2 thead-in">Счёт получателя</span>
+                <span class="col-3 thead-sum">Сумма</span>
+                <span class="col-4 thead-date">Дата</span>
+              </div>
+              <div class="tbody-history">
+                <div class="row-history">
+                  <span class="col-1">123545123541</span>
+                  <span class="col-2">123545123541</span>
+                  <span class="col-3 sum-out">- 1 234 <span class="currency">₽</span></span>
+                  <span class="col-4">31.12.2021</span>
+                </div>
+                <div class="row-history">
+                  <span class="col-1">123545123541</span>
+                  <span class="col-2">123545123541</span>
+                  <span class="col-3 sum-in">+ 1 234 <span class="currency">₽</span></span>
+                  <span class="col-4">31.12.2021</span>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </main>
   </div>
-  <div class="notifications">
+  <!-- <div class="notifications">
     <div class="notification success">
       This is a success message.
       <button class="notification-btn success"></button>
@@ -128,6 +108,100 @@
       This is a warning message.
       <button class="notification-btn warning"></button>
     </div>
-  </div>
+  </div> -->
+  <script>
+    const labels = [
+      'Jan',
+      'Feb',
+      'Mar',
+      'Apr',
+      'May',
+      'Jun',
+    ];
+
+    // Math.max.apply(null, [1,34,-3,4])
+
+    const dataset = [0, 10, 5, 2, 20, 30];
+    const maxY = Math.max.apply(null, dataset)
+  
+    const data = {
+      maxBarThickness: maxY,
+      labels: labels,
+      datasets: [{
+        label: '',
+        backgroundColor: 'rgb(17, 106, 204)',
+        data: dataset,
+      }]
+    };
+
+    const chartAreaBorder = {
+      id: 'chartAreaBorder',
+      beforeDraw(chart, args, options) {
+        const {ctx, chartArea: {left, top, width, height}} = chart;
+        ctx.save();
+        ctx.strokeStyle = options.borderColor;
+        ctx.lineWidth = options.borderWidth;
+        ctx.setLineDash(options.borderDash || []);
+        ctx.lineDashOffset = options.borderDashOffset;
+        ctx.strokeRect(left, top, width, height);
+        ctx.restore();
+      }
+    };
+  
+    const config = {
+      type: 'bar',
+      data: data,
+      options: {
+        plugins: {
+          legend: {
+            display: false,
+          },
+          chartAreaBorder: {
+            borderColor: 'rgb(0 0 0)',
+            borderWidth: 1,
+          },
+        },
+        scales: {
+          x: {
+            grid: {
+              display: false,
+            },
+            ticks: {
+              color: 'rgb(0 0 0)',
+              font: {
+                size: 20,
+                weight: 700,
+                family: 'Ubuntu'
+              },
+            }
+          },
+          y: {
+            grid: {
+              display: false,
+            },
+            borderColor: 'rgb(17, 106, 204)',
+            position: 'right',
+            min: 0,
+            max: maxY,
+            ticks: {
+              stepSize: maxY,
+              color: 'rgb(0 0 0)',
+              font: {
+                size: 20,
+                weight: 500,
+                family: 'Ubuntu'
+              },
+            },
+          },
+        },
+      },
+      plugins: [chartAreaBorder]
+    };
+
+    const myChart = new Chart(
+      document.getElementById('myChart'),
+      config
+    );
+  </script>
 </body>
 </html>
