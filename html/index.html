@@ -32,85 +32,819 @@
           <p class="balance--detail">Баланс <span>31 235 ₽</span></p>
         </div>
         <div class="block block--main">
-          <div class="tran bg-grey">
-            <h4 class="tran__title">Новый перевод</h4>
-            <form action="#" class="form">
-              <div class="form__row">
-                <p class="form__label form__label--detail">Номер счёта получателя</p>
-                <div class="account">
-                  <input class="account__title" placeholder="Введите счёт" name="account">
-                  <ul class="account__list is-hide">
-                    <li class="account__item">74213041477477406320783754</li>
-                    <li class="account__item">74213041477477406320783754</li>
-                    <li class="account__item">74213041477477406320783754</li>
-                    <li class="account__item">74213041477477406320783754</li>
-                    <li class="account__item">74213041477477406320783754</li>
-                  </ul>
-                </div>
-              </div>
-              <div class="form__row">
-                <label class="form__label form__label--detail">
-                  Сумма перевода
-                  <input type="text" class="form__input" name="sum" placeholder="Введите сумму">
-                  <span class="message hidden">Error message</span>
-                </label>
-              </div>
-              <button class="send">Отправить</button>
-            </form>
-          </div>
-          <div class="dynamic bg-wite">
+          <div class="dynamic dynamic--history bg-wite">
             <h4 class="tran__title">Динамика баланса</h4>
-            <div><canvas id="myChart" height="100%"></canvas></div>
+            <div><canvas id="balance-history"></canvas></div>
           </div>
-          <div class="history bg-grey">
-            <h4 class="tran__title">История переводов</h4>
-            <div class="table-history">
-              <div class="thead-history">
-                <span class="col-1 thead-out">Счёт отправителя</span>
-                <span class="col-2 thead-in">Счёт получателя</span>
-                <span class="col-3 thead-sum">Сумма</span>
-                <span class="col-4 thead-date">Дата</span>
-              </div>
-              <div class="tbody-history">
-                <div class="row-history">
-                  <span class="col-1">123545123541</span>
-                  <span class="col-2">123545123541</span>
-                  <span class="col-3 sum-out">- 1 234 <span class="currency">₽</span></span>
-                  <span class="col-4">31.12.2021</span>
+          <div class="dynamic dynamic--history bg-wite">
+            <h4 class="tran__title">Соотношение входящих исходящих транзакций</h4>
+            <div><canvas id="transaction-history"></canvas></div>
+          </div>
+          <div class="history__tabs">
+            <div class="history bg-grey" data-page="1">
+              <h4 class="tran__title">История переводов</h4>
+              <div class="table-history">
+                <div class="thead-history">
+                  <span class="col-1 thead-out">Счёт отправителя</span>
+                  <span class="col-2 thead-in">Счёт получателя</span>
+                  <span class="col-3 thead-sum">Сумма</span>
+                  <span class="col-4 thead-date">Дата</span>
                 </div>
-                <div class="row-history">
-                  <span class="col-1">123545123541</span>
-                  <span class="col-2">123545123541</span>
-                  <span class="col-3 sum-in">+ 1 234 <span class="currency">₽</span></span>
-                  <span class="col-4">31.12.2021</span>
+                <div class="tbody-history">
+                  <div class="row-history">
+                    <span class="col-1">123545123541</span>
+                    <span class="col-2">123545123541</span>
+                    <span class="col-3 sum-out">- 1 234 <span class="currency">₽</span></span>
+                    <span class="col-4">31.12.2021</span>
+                  </div>
+                  <div class="row-history">
+                    <span class="col-1">123545123541</span>
+                    <span class="col-2">123545123541</span>
+                    <span class="col-3 sum-in">+ 1 234 <span class="currency">₽</span></span>
+                    <span class="col-4">31.12.2021</span>
+                  </div>
                 </div>
               </div>
+            </div>
+            <div class="history bg-grey is-hide" data-page="2">
+              <h4 class="tran__title">История переводов</h4>
+              <div class="table-history">
+                <div class="thead-history">
+                  <span class="col-1 thead-out">Счёт отправителя</span>
+                  <span class="col-2 thead-in">Счёт получателя</span>
+                  <span class="col-3 thead-sum">Сумма</span>
+                  <span class="col-4 thead-date">Дата</span>
+                </div>
+                <div class="tbody-history">
+                  <div class="row-history">
+                    <span class="col-1">123545123541</span>
+                    <span class="col-2">123545123541</span>
+                    <span class="col-3 sum-out">- 1 234 <span class="currency">₽</span></span>
+                    <span class="col-4">31.12.2021</span>
+                  </div>
+                  <div class="row-history">
+                    <span class="col-1">123545123541</span>
+                    <span class="col-2">123545123541</span>
+                    <span class="col-3 sum-in">+ 1 234 <span class="currency">₽</span></span>
+                    <span class="col-4">31.12.2021</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="history bg-grey is-hide" data-page="3">
+              <h4 class="tran__title">История переводов</h4>
+              <div class="table-history">
+                <div class="thead-history">
+                  <span class="col-1 thead-out">Счёт отправителя</span>
+                  <span class="col-2 thead-in">Счёт получателя</span>
+                  <span class="col-3 thead-sum">Сумма</span>
+                  <span class="col-4 thead-date">Дата</span>
+                </div>
+                <div class="tbody-history">
+                  <div class="row-history">
+                    <span class="col-1">123545123541</span>
+                    <span class="col-2">123545123541</span>
+                    <span class="col-3 sum-out">- 1 234 <span class="currency">₽</span></span>
+                    <span class="col-4">31.12.2021</span>
+                  </div>
+                  <div class="row-history">
+                    <span class="col-1">123545123541</span>
+                    <span class="col-2">123545123541</span>
+                    <span class="col-3 sum-in">+ 1 234 <span class="currency">₽</span></span>
+                    <span class="col-4">31.12.2021</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="history bg-grey is-hide" data-page="4">
+              <h4 class="tran__title">История переводов</h4>
+              <div class="table-history">
+                <div class="thead-history">
+                  <span class="col-1 thead-out">Счёт отправителя</span>
+                  <span class="col-2 thead-in">Счёт получателя</span>
+                  <span class="col-3 thead-sum">Сумма</span>
+                  <span class="col-4 thead-date">Дата</span>
+                </div>
+                <div class="tbody-history">
+                  <div class="row-history">
+                    <span class="col-1">123545123541</span>
+                    <span class="col-2">123545123541</span>
+                    <span class="col-3 sum-out">- 1 234 <span class="currency">₽</span></span>
+                    <span class="col-4">31.12.2021</span>
+                  </div>
+                  <div class="row-history">
+                    <span class="col-1">123545123541</span>
+                    <span class="col-2">123545123541</span>
+                    <span class="col-3 sum-in">+ 1 234 <span class="currency">₽</span></span>
+                    <span class="col-4">31.12.2021</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="history bg-grey is-hide" data-page="5">
+              <h4 class="tran__title">История переводов</h4>
+              <div class="table-history">
+                <div class="thead-history">
+                  <span class="col-1 thead-out">Счёт отправителя</span>
+                  <span class="col-2 thead-in">Счёт получателя</span>
+                  <span class="col-3 thead-sum">Сумма</span>
+                  <span class="col-4 thead-date">Дата</span>
+                </div>
+                <div class="tbody-history">
+                  <div class="row-history">
+                    <span class="col-1">123545123541</span>
+                    <span class="col-2">123545123541</span>
+                    <span class="col-3 sum-out">- 1 234 <span class="currency">₽</span></span>
+                    <span class="col-4">31.12.2021</span>
+                  </div>
+                  <div class="row-history">
+                    <span class="col-1">123545123541</span>
+                    <span class="col-2">123545123541</span>
+                    <span class="col-3 sum-in">+ 1 234 <span class="currency">₽</span></span>
+                    <span class="col-4">31.12.2021</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="history bg-grey is-hide" data-page="6">
+              <h4 class="tran__title">История переводов</h4>
+              <div class="table-history">
+                <div class="thead-history">
+                  <span class="col-1 thead-out">Счёт отправителя</span>
+                  <span class="col-2 thead-in">Счёт получателя</span>
+                  <span class="col-3 thead-sum">Сумма</span>
+                  <span class="col-4 thead-date">Дата</span>
+                </div>
+                <div class="tbody-history">
+                  <div class="row-history">
+                    <span class="col-1">123545123541</span>
+                    <span class="col-2">123545123541</span>
+                    <span class="col-3 sum-out">- 1 234 <span class="currency">₽</span></span>
+                    <span class="col-4">31.12.2021</span>
+                  </div>
+                  <div class="row-history">
+                    <span class="col-1">123545123541</span>
+                    <span class="col-2">123545123541</span>
+                    <span class="col-3 sum-in">+ 1 234 <span class="currency">₽</span></span>
+                    <span class="col-4">31.12.2021</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="history bg-grey is-hide" data-page="7">
+              <h4 class="tran__title">История переводов</h4>
+              <div class="table-history">
+                <div class="thead-history">
+                  <span class="col-1 thead-out">Счёт отправителя</span>
+                  <span class="col-2 thead-in">Счёт получателя</span>
+                  <span class="col-3 thead-sum">Сумма</span>
+                  <span class="col-4 thead-date">Дата</span>
+                </div>
+                <div class="tbody-history">
+                  <div class="row-history">
+                    <span class="col-1">123545123541</span>
+                    <span class="col-2">123545123541</span>
+                    <span class="col-3 sum-out">- 1 234 <span class="currency">₽</span></span>
+                    <span class="col-4">31.12.2021</span>
+                  </div>
+                  <div class="row-history">
+                    <span class="col-1">123545123541</span>
+                    <span class="col-2">123545123541</span>
+                    <span class="col-3 sum-in">+ 1 234 <span class="currency">₽</span></span>
+                    <span class="col-4">31.12.2021</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="history bg-grey is-hide" data-page="8">
+              <h4 class="tran__title">История переводов</h4>
+              <div class="table-history">
+                <div class="thead-history">
+                  <span class="col-1 thead-out">Счёт отправителя</span>
+                  <span class="col-2 thead-in">Счёт получателя</span>
+                  <span class="col-3 thead-sum">Сумма</span>
+                  <span class="col-4 thead-date">Дата</span>
+                </div>
+                <div class="tbody-history">
+                  <div class="row-history">
+                    <span class="col-1">123545123541</span>
+                    <span class="col-2">123545123541</span>
+                    <span class="col-3 sum-out">- 1 234 <span class="currency">₽</span></span>
+                    <span class="col-4">31.12.2021</span>
+                  </div>
+                  <div class="row-history">
+                    <span class="col-1">123545123541</span>
+                    <span class="col-2">123545123541</span>
+                    <span class="col-3 sum-in">+ 1 234 <span class="currency">₽</span></span>
+                    <span class="col-4">31.12.2021</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="history bg-grey is-hide" data-page="9">
+              <h4 class="tran__title">История переводов</h4>
+              <div class="table-history">
+                <div class="thead-history">
+                  <span class="col-1 thead-out">Счёт отправителя</span>
+                  <span class="col-2 thead-in">Счёт получателя</span>
+                  <span class="col-3 thead-sum">Сумма</span>
+                  <span class="col-4 thead-date">Дата</span>
+                </div>
+                <div class="tbody-history">
+                  <div class="row-history">
+                    <span class="col-1">123545123541</span>
+                    <span class="col-2">123545123541</span>
+                    <span class="col-3 sum-out">- 1 234 <span class="currency">₽</span></span>
+                    <span class="col-4">31.12.2021</span>
+                  </div>
+                  <div class="row-history">
+                    <span class="col-1">123545123541</span>
+                    <span class="col-2">123545123541</span>
+                    <span class="col-3 sum-in">+ 1 234 <span class="currency">₽</span></span>
+                    <span class="col-4">31.12.2021</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="history bg-grey is-hide" data-page="10">
+              <h4 class="tran__title">История переводов</h4>
+              <div class="table-history">
+                <div class="thead-history">
+                  <span class="col-1 thead-out">Счёт отправителя</span>
+                  <span class="col-2 thead-in">Счёт получателя</span>
+                  <span class="col-3 thead-sum">Сумма</span>
+                  <span class="col-4 thead-date">Дата</span>
+                </div>
+                <div class="tbody-history">
+                  <div class="row-history">
+                    <span class="col-1">123545123541</span>
+                    <span class="col-2">123545123541</span>
+                    <span class="col-3 sum-out">- 1 234 <span class="currency">₽</span></span>
+                    <span class="col-4">31.12.2021</span>
+                  </div>
+                  <div class="row-history">
+                    <span class="col-1">123545123541</span>
+                    <span class="col-2">123545123541</span>
+                    <span class="col-3 sum-in">+ 1 234 <span class="currency">₽</span></span>
+                    <span class="col-4">31.12.2021</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="history bg-grey is-hide" data-page="11">
+              <h4 class="tran__title">История переводов</h4>
+              <div class="table-history">
+                <div class="thead-history">
+                  <span class="col-1 thead-out">Счёт отправителя</span>
+                  <span class="col-2 thead-in">Счёт получателя</span>
+                  <span class="col-3 thead-sum">Сумма</span>
+                  <span class="col-4 thead-date">Дата</span>
+                </div>
+                <div class="tbody-history">
+                  <div class="row-history">
+                    <span class="col-1">123545123541</span>
+                    <span class="col-2">123545123541</span>
+                    <span class="col-3 sum-out">- 1 234 <span class="currency">₽</span></span>
+                    <span class="col-4">31.12.2021</span>
+                  </div>
+                  <div class="row-history">
+                    <span class="col-1">123545123541</span>
+                    <span class="col-2">123545123541</span>
+                    <span class="col-3 sum-in">+ 1 234 <span class="currency">₽</span></span>
+                    <span class="col-4">31.12.2021</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="history bg-grey is-hide" data-page="12">
+              <h4 class="tran__title">История переводов</h4>
+              <div class="table-history">
+                <div class="thead-history">
+                  <span class="col-1 thead-out">Счёт отправителя</span>
+                  <span class="col-2 thead-in">Счёт получателя</span>
+                  <span class="col-3 thead-sum">Сумма</span>
+                  <span class="col-4 thead-date">Дата</span>
+                </div>
+                <div class="tbody-history">
+                  <div class="row-history">
+                    <span class="col-1">123545123541</span>
+                    <span class="col-2">123545123541</span>
+                    <span class="col-3 sum-out">- 1 234 <span class="currency">₽</span></span>
+                    <span class="col-4">31.12.2021</span>
+                  </div>
+                  <div class="row-history">
+                    <span class="col-1">123545123541</span>
+                    <span class="col-2">123545123541</span>
+                    <span class="col-3 sum-in">+ 1 234 <span class="currency">₽</span></span>
+                    <span class="col-4">31.12.2021</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="history bg-grey is-hide" data-page="13">
+              <h4 class="tran__title">История переводов</h4>
+              <div class="table-history">
+                <div class="thead-history">
+                  <span class="col-1 thead-out">Счёт отправителя</span>
+                  <span class="col-2 thead-in">Счёт получателя</span>
+                  <span class="col-3 thead-sum">Сумма</span>
+                  <span class="col-4 thead-date">Дата</span>
+                </div>
+                <div class="tbody-history">
+                  <div class="row-history">
+                    <span class="col-1">123545123541</span>
+                    <span class="col-2">123545123541</span>
+                    <span class="col-3 sum-out">- 1 234 <span class="currency">₽</span></span>
+                    <span class="col-4">31.12.2021</span>
+                  </div>
+                  <div class="row-history">
+                    <span class="col-1">123545123541</span>
+                    <span class="col-2">123545123541</span>
+                    <span class="col-3 sum-in">+ 1 234 <span class="currency">₽</span></span>
+                    <span class="col-4">31.12.2021</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="history bg-grey is-hide" data-page="14">
+              <h4 class="tran__title">История переводов</h4>
+              <div class="table-history">
+                <div class="thead-history">
+                  <span class="col-1 thead-out">Счёт отправителя</span>
+                  <span class="col-2 thead-in">Счёт получателя</span>
+                  <span class="col-3 thead-sum">Сумма</span>
+                  <span class="col-4 thead-date">Дата</span>
+                </div>
+                <div class="tbody-history">
+                  <div class="row-history">
+                    <span class="col-1">123545123541</span>
+                    <span class="col-2">123545123541</span>
+                    <span class="col-3 sum-out">- 1 234 <span class="currency">₽</span></span>
+                    <span class="col-4">31.12.2021</span>
+                  </div>
+                  <div class="row-history">
+                    <span class="col-1">123545123541</span>
+                    <span class="col-2">123545123541</span>
+                    <span class="col-3 sum-in">+ 1 234 <span class="currency">₽</span></span>
+                    <span class="col-4">31.12.2021</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="history bg-grey is-hide" data-page="15">
+              <h4 class="tran__title">История переводов</h4>
+              <div class="table-history">
+                <div class="thead-history">
+                  <span class="col-1 thead-out">Счёт отправителя</span>
+                  <span class="col-2 thead-in">Счёт получателя</span>
+                  <span class="col-3 thead-sum">Сумма</span>
+                  <span class="col-4 thead-date">Дата</span>
+                </div>
+                <div class="tbody-history">
+                  <div class="row-history">
+                    <span class="col-1">123545123541</span>
+                    <span class="col-2">123545123541</span>
+                    <span class="col-3 sum-out">- 1 234 <span class="currency">₽</span></span>
+                    <span class="col-4">31.12.2021</span>
+                  </div>
+                  <div class="row-history">
+                    <span class="col-1">123545123541</span>
+                    <span class="col-2">123545123541</span>
+                    <span class="col-3 sum-in">+ 1 234 <span class="currency">₽</span></span>
+                    <span class="col-4">31.12.2021</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="history bg-grey is-hide" data-page="16">
+              <h4 class="tran__title">История переводов</h4>
+              <div class="table-history">
+                <div class="thead-history">
+                  <span class="col-1 thead-out">Счёт отправителя</span>
+                  <span class="col-2 thead-in">Счёт получателя</span>
+                  <span class="col-3 thead-sum">Сумма</span>
+                  <span class="col-4 thead-date">Дата</span>
+                </div>
+                <div class="tbody-history">
+                  <div class="row-history">
+                    <span class="col-1">123545123541</span>
+                    <span class="col-2">123545123541</span>
+                    <span class="col-3 sum-out">- 1 234 <span class="currency">₽</span></span>
+                    <span class="col-4">31.12.2021</span>
+                  </div>
+                  <div class="row-history">
+                    <span class="col-1">123545123541</span>
+                    <span class="col-2">123545123541</span>
+                    <span class="col-3 sum-in">+ 1 234 <span class="currency">₽</span></span>
+                    <span class="col-4">31.12.2021</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="history bg-grey is-hide" data-page="17">
+              <h4 class="tran__title">История переводов</h4>
+              <div class="table-history">
+                <div class="thead-history">
+                  <span class="col-1 thead-out">Счёт отправителя</span>
+                  <span class="col-2 thead-in">Счёт получателя</span>
+                  <span class="col-3 thead-sum">Сумма</span>
+                  <span class="col-4 thead-date">Дата</span>
+                </div>
+                <div class="tbody-history">
+                  <div class="row-history">
+                    <span class="col-1">123545123541</span>
+                    <span class="col-2">123545123541</span>
+                    <span class="col-3 sum-out">- 1 234 <span class="currency">₽</span></span>
+                    <span class="col-4">31.12.2021</span>
+                  </div>
+                  <div class="row-history">
+                    <span class="col-1">123545123541</span>
+                    <span class="col-2">123545123541</span>
+                    <span class="col-3 sum-in">+ 1 234 <span class="currency">₽</span></span>
+                    <span class="col-4">31.12.2021</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="history bg-grey is-hide" data-page="18">
+              <h4 class="tran__title">История переводов</h4>
+              <div class="table-history">
+                <div class="thead-history">
+                  <span class="col-1 thead-out">Счёт отправителя</span>
+                  <span class="col-2 thead-in">Счёт получателя</span>
+                  <span class="col-3 thead-sum">Сумма</span>
+                  <span class="col-4 thead-date">Дата</span>
+                </div>
+                <div class="tbody-history">
+                  <div class="row-history">
+                    <span class="col-1">123545123541</span>
+                    <span class="col-2">123545123541</span>
+                    <span class="col-3 sum-out">- 1 234 <span class="currency">₽</span></span>
+                    <span class="col-4">31.12.2021</span>
+                  </div>
+                  <div class="row-history">
+                    <span class="col-1">123545123541</span>
+                    <span class="col-2">123545123541</span>
+                    <span class="col-3 sum-in">+ 1 234 <span class="currency">₽</span></span>
+                    <span class="col-4">31.12.2021</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="history bg-grey is-hide" data-page="19">
+              <h4 class="tran__title">История переводов</h4>
+              <div class="table-history">
+                <div class="thead-history">
+                  <span class="col-1 thead-out">Счёт отправителя</span>
+                  <span class="col-2 thead-in">Счёт получателя</span>
+                  <span class="col-3 thead-sum">Сумма</span>
+                  <span class="col-4 thead-date">Дата</span>
+                </div>
+                <div class="tbody-history">
+                  <div class="row-history">
+                    <span class="col-1">123545123541</span>
+                    <span class="col-2">123545123541</span>
+                    <span class="col-3 sum-out">- 1 234 <span class="currency">₽</span></span>
+                    <span class="col-4">31.12.2021</span>
+                  </div>
+                  <div class="row-history">
+                    <span class="col-1">123545123541</span>
+                    <span class="col-2">123545123541</span>
+                    <span class="col-3 sum-in">+ 1 234 <span class="currency">₽</span></span>
+                    <span class="col-4">31.12.2021</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="history bg-grey is-hide" data-page="20">
+              <h4 class="tran__title">История переводов</h4>
+              <div class="table-history">
+                <div class="thead-history">
+                  <span class="col-1 thead-out">Счёт отправителя</span>
+                  <span class="col-2 thead-in">Счёт получателя</span>
+                  <span class="col-3 thead-sum">Сумма</span>
+                  <span class="col-4 thead-date">Дата</span>
+                </div>
+                <div class="tbody-history">
+                  <div class="row-history">
+                    <span class="col-1">123545123541</span>
+                    <span class="col-2">123545123541</span>
+                    <span class="col-3 sum-out">- 1 234 <span class="currency">₽</span></span>
+                    <span class="col-4">31.12.2021</span>
+                  </div>
+                  <div class="row-history">
+                    <span class="col-1">123545123541</span>
+                    <span class="col-2">123545123541</span>
+                    <span class="col-3 sum-in">+ 1 234 <span class="currency">₽</span></span>
+                    <span class="col-4">31.12.2021</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="history bg-grey is-hide" data-page="21">
+              <h4 class="tran__title">История переводов</h4>
+              <div class="table-history">
+                <div class="thead-history">
+                  <span class="col-1 thead-out">Счёт отправителя</span>
+                  <span class="col-2 thead-in">Счёт получателя</span>
+                  <span class="col-3 thead-sum">Сумма</span>
+                  <span class="col-4 thead-date">Дата</span>
+                </div>
+                <div class="tbody-history">
+                  <div class="row-history">
+                    <span class="col-1">123545123541</span>
+                    <span class="col-2">123545123541</span>
+                    <span class="col-3 sum-out">- 1 234 <span class="currency">₽</span></span>
+                    <span class="col-4">31.12.2021</span>
+                  </div>
+                  <div class="row-history">
+                    <span class="col-1">123545123541</span>
+                    <span class="col-2">123545123541</span>
+                    <span class="col-3 sum-in">+ 1 234 <span class="currency">₽</span></span>
+                    <span class="col-4">31.12.2021</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="history bg-grey is-hide" data-page="22">
+              <h4 class="tran__title">История переводов</h4>
+              <div class="table-history">
+                <div class="thead-history">
+                  <span class="col-1 thead-out">Счёт отправителя</span>
+                  <span class="col-2 thead-in">Счёт получателя</span>
+                  <span class="col-3 thead-sum">Сумма</span>
+                  <span class="col-4 thead-date">Дата</span>
+                </div>
+                <div class="tbody-history">
+                  <div class="row-history">
+                    <span class="col-1">123545123541</span>
+                    <span class="col-2">123545123541</span>
+                    <span class="col-3 sum-out">- 1 234 <span class="currency">₽</span></span>
+                    <span class="col-4">31.12.2021</span>
+                  </div>
+                  <div class="row-history">
+                    <span class="col-1">123545123541</span>
+                    <span class="col-2">123545123541</span>
+                    <span class="col-3 sum-in">+ 1 234 <span class="currency">₽</span></span>
+                    <span class="col-4">31.12.2021</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="pagination__block">
+              <button class="pagination__prev"></button>
+              <button class="pagination__step pagination__step--prev hide">...</button>
+              <button class="pagination__page is-show active" data-page="1">1</button>
+              <button class="pagination__page is-show" data-page="2">2</button>
+              <button class="pagination__page is-show" data-page="3">3</button>
+              <button class="pagination__page is-show" data-page="4">4</button>
+              <button class="pagination__page is-show" data-page="5">5</button>
+              <button class="pagination__page is-show" data-page="6">6</button>
+              <button class="pagination__page is-hide" data-page="7">7</button>
+              <button class="pagination__page is-hide" data-page="8">8</button>
+              <button class="pagination__page is-hide" data-page="9">9</button>
+              <button class="pagination__page is-hide" data-page="10">10</button>
+              <button class="pagination__page is-hide" data-page="11">11</button>
+              <button class="pagination__page is-hide" data-page="12">12</button>
+              <button class="pagination__page is-hide" data-page="13">13</button>
+              <button class="pagination__page is-hide" data-page="14">14</button>
+              <button class="pagination__page is-hide" data-page="15">15</button>
+              <button class="pagination__page is-hide" data-page="16">16</button>
+              <button class="pagination__page is-hide" data-page="17">17</button>
+              <button class="pagination__page is-hide" data-page="18">18</button>
+              <button class="pagination__page is-hide" data-page="19">19</button>
+              <button class="pagination__page is-hide" data-page="20">20</button>
+              <button class="pagination__page is-hide" data-page="21">21</button>
+              <button class="pagination__page is-hide" data-page="22">22</button>
+              <button class="pagination__step pagination__step--next">...</button>
+              <button class="pagination__next"></button>
             </div>
           </div>
         </div>
       </div>
     </main>
   </div>
-  <!-- <div class="notifications">
-    <div class="notification success">
-      This is a success message.
-      <button class="notification-btn success"></button>
-    </div>
-    <div class="notification error">
-      This is a error message.
-      <button class="notification-btn error"></button>
-    </div>
-    <div class="notification information">
-      This is a information message.
-      <button class="notification-btn information"></button>
-    </div>
-    <div class="notification warning">
-      This is a warning message.
-      <button class="notification-btn warning"></button>
-    </div>
-  </div> -->
   <script>
+
+    const historyBlocks = document.querySelectorAll('.history');
+    const paginationBlock = document.querySelector('.pagination__block');
+    const paginationPage = document.querySelectorAll('.pagination__page');
+
+    paginationBlock.addEventListener('click', (e) => {
+      const currentPage = +paginationBlock.querySelector('.active').textContent;
+      const btnsShow = paginationBlock.querySelectorAll('.is-show');
+      const minBtnShow = btnsShow[0];
+      const maxBtnShow = btnsShow[btnsShow.length - 1];
+      
+      if(e.target.closest('.pagination__next')) {
+        if(currentPage === paginationPage.length) {
+          const paginationStepNext = paginationBlock.querySelector('.pagination__next');
+          paginationStepNext.classList.add('disable');
+          return;
+        }
+        const paginationStepPrev = paginationBlock.querySelector('.pagination__prev');
+        paginationStepPrev.classList.remove('disable');
+
+        historyBlocks.forEach(block => {
+          block.classList.add('is-hide')
+        })
+        paginationPage.forEach(btn => {
+          btn.classList.remove('active')
+        })
+        const nextPage = document.querySelector(`.history[data-page="${currentPage + 1}"]`);
+        nextPage.classList.remove('is-hide');
+
+        const nextBtn = document.querySelector(`.pagination__page[data-page="${currentPage + 1}"]`);
+        nextBtn.classList.add('active');
+        if(currentPage + 1 > +maxBtnShow.textContent) {
+          nextBtn.classList.add('is-show');
+          nextBtn.classList.remove('is-hide');
+          minBtnShow.classList.add('is-hide');
+          minBtnShow.classList.remove('is-show');
+          if(currentPage + 1 === 7) {
+            btnsShow[1].classList.add('is-hide');
+            btnsShow[1].classList.remove('is-show');
+            const paginationStepPrev = paginationBlock.querySelector('.pagination__step--prev');
+            paginationStepPrev.classList.remove('hide');
+          }
+          if(currentPage + 1 === paginationPage.length) {
+            const prevBtn = document.querySelector(`.pagination__page[data-page="${currentPage - 4}"]`);
+            prevBtn.classList.remove('is-hide');
+            prevBtn.classList.add('is-show');
+            const paginationStepNext = paginationBlock.querySelector('.pagination__step--next');
+            paginationStepNext.classList.add('hide');
+          }
+        }
+      }
+
+      if(e.target.closest('.pagination__prev')) {
+        if(currentPage === 1) {
+          const paginationStepPrev = paginationBlock.querySelector('.pagination__prev');
+          paginationStepPrev.classList.add('disable');
+          return;
+        }
+        const paginationStepNext = paginationBlock.querySelector('.pagination__next');
+        paginationStepNext.classList.remove('disable');
+
+        historyBlocks.forEach(block => {
+          block.classList.add('is-hide')
+        })
+        paginationPage.forEach(btn => {
+          btn.classList.remove('active')
+        })
+        const nextPage = document.querySelector(`.history[data-page="${currentPage - 1}"]`);
+        nextPage.classList.remove('is-hide');
+
+        const nextBtn = document.querySelector(`.pagination__page[data-page="${currentPage - 1}"]`);
+        nextBtn.classList.add('active');
+        if(currentPage - 1 < +minBtnShow.textContent) {
+          nextBtn.classList.add('is-show');
+          nextBtn.classList.remove('is-hide');
+          maxBtnShow.classList.add('is-hide');
+          maxBtnShow.classList.remove('is-show');
+          if(currentPage - 1 === 1) {
+            const nextBtn = document.querySelector(`.pagination__page[data-page="${currentPage + 4}"]`);
+            nextBtn.classList.remove('is-hide');
+            nextBtn.classList.add('is-show');
+            const paginationStepPrev = paginationBlock.querySelector('.pagination__step--prev');
+            paginationStepPrev.classList.add('hide');
+          }
+          if((currentPage - 1) === (paginationPage.length - 6)) {
+            btnsShow[btnsShow.length - 2].classList.add('is-hide');
+            btnsShow[btnsShow.length - 2].classList.remove('is-show');
+            maxBtnShow.classList.add('is-hide');
+            maxBtnShow.classList.remove('is-show');
+            const paginationStepNext = paginationBlock.querySelector('.pagination__step--next');
+            paginationStepNext.classList.remove('hide');
+          }
+        }
+      }
+
+      if(e.target.closest('.pagination__step--next')) {
+        const paginationNext = paginationBlock.querySelector('.pagination__next');
+        paginationNext.classList.add('disable');
+
+        const paginationPrev = paginationBlock.querySelector('.pagination__prev');
+        paginationPrev.classList.remove('disable');
+
+        historyBlocks.forEach(block => {
+          block.classList.add('is-hide')
+        })
+        paginationPage.forEach(btn => {
+          btn.classList.remove('active')
+          btn.classList.remove('is-show')
+          btn.classList.add('is-hide')
+        })
+        const nextPage = document.querySelector(`.history[data-page="${paginationPage.length}"]`);
+        nextPage.classList.remove('is-hide');
+
+        const nextBtn = document.querySelector(`.pagination__page[data-page="${paginationPage.length}"]`);
+        nextBtn.classList.add('active');
+
+        const paginationStepPrev = paginationBlock.querySelector('.pagination__step--prev');
+        paginationStepPrev.classList.remove('hide');
+        const paginationStepNext = paginationBlock.querySelector('.pagination__step--next');
+        paginationStepNext.classList.add('hide');
+
+        for(let i = 0; i < 6; i++) {
+          const nextBtn = document.querySelector(`.pagination__page[data-page="${paginationPage.length - i}"]`);
+          nextBtn.classList.add('is-show');
+          nextBtn.classList.remove('is-hide');
+        }
+      }
+
+      if(e.target.closest('.pagination__step--prev')) {
+        const paginationNext = paginationBlock.querySelector('.pagination__next');
+        paginationNext.classList.remove('disable');
+
+        const paginationPrev = paginationBlock.querySelector('.pagination__prev');
+        paginationPrev.classList.add('disable');
+
+        historyBlocks.forEach(block => {
+          block.classList.add('is-hide')
+        })
+        paginationPage.forEach(btn => {
+          btn.classList.remove('active')
+          btn.classList.remove('is-show')
+          btn.classList.add('is-hide')
+        })
+        const nextPage = document.querySelector(`.history[data-page="${1}"]`);
+        nextPage.classList.remove('is-hide');
+
+        const nextBtn = document.querySelector(`.pagination__page[data-page="${1}"]`);
+        nextBtn.classList.add('active');
+
+        const paginationStepPrev = paginationBlock.querySelector('.pagination__step--prev');
+        paginationStepPrev.classList.add('hide');
+        const paginationStepNext = paginationBlock.querySelector('.pagination__step--next');
+        paginationStepNext.classList.remove('hide');
+
+        for(let i = 0; i < 6; i++) {
+          const nextBtn = document.querySelector(`.pagination__page[data-page="${1 + i}"]`);
+          nextBtn.classList.add('is-show');
+          nextBtn.classList.remove('is-hide');
+        }
+      }
+
+      if(e.target.closest('.pagination__page')) {
+        if(+e.target.dataset.page === paginationPage.length) {
+          const paginationNext = paginationBlock.querySelector('.pagination__next');
+          paginationNext.classList.add('disable');
+        }
+
+        if(+e.target.dataset.page === 1) {
+          const paginationPrev = paginationBlock.querySelector('.pagination__prev');
+          paginationPrev.classList.remove('disable');
+        }
+
+        historyBlocks.forEach(block => {
+          block.classList.add('is-hide')
+        })
+        paginationPage.forEach(btn => {
+          btn.classList.remove('active')
+          btn.classList.remove('is-show')
+          btn.classList.add('is-hide')
+        })
+        const nextPage = document.querySelector(`.history[data-page="${e.target.dataset.page}"]`);
+        nextPage.classList.remove('is-hide');
+
+        const nextBtn = document.querySelector(`.pagination__page[data-page="${e.target.dataset.page}"]`);
+        nextBtn.classList.add('active');
+
+
+        if(+e.target.dataset.page < paginationPage.length - 4) {
+          for(let i = 0; i < 5; i++) {
+            const nextBtn = document.querySelector(`.pagination__page[data-page="${+e.target.dataset.page + i}"]`);
+            nextBtn.classList.add('is-show');
+            nextBtn.classList.remove('is-hide');
+          }
+
+          const paginationStepPrev = paginationBlock.querySelector('.pagination__step--prev');
+          paginationStepPrev.classList.remove('hide');
+          const paginationStepNext = paginationBlock.querySelector('.pagination__step--next');
+          paginationStepNext.classList.remove('hide');
+        } else {
+          for(let i = 0; i < 6; i++) {
+            const nextBtn = document.querySelector(`.pagination__page[data-page="${paginationPage.length - i}"]`);
+            nextBtn.classList.add('is-show');
+            nextBtn.classList.remove('is-hide');
+          }
+
+          const paginationStepPrev = paginationBlock.querySelector('.pagination__step--prev');
+          paginationStepPrev.classList.remove('hide');
+          const paginationStepNext = paginationBlock.querySelector('.pagination__step--next');
+          paginationStepNext.classList.add('hide');
+        }
+      }
+    })
+
     const labels = [
+      'Jan',
+      'Feb',
+      'Mar',
+      'Apr',
+      'May',
+      'Jun',
       'Jan',
       'Feb',
       'Mar',
@@ -121,16 +855,16 @@
 
     // Math.max.apply(null, [1,34,-3,4])
 
-    const dataset = [0, 10, 5, 2, 20, 30];
-    const maxY = Math.max.apply(null, dataset)
+    const datasetBalance = [0, 10, 5, 2, 20, 30, 20, 10, 5, 2, 20, 30];
+    const maxYBalance = Math.max.apply(null, datasetBalance);
   
-    const data = {
-      maxBarThickness: maxY,
+    const dataBalance = {
+      maxBarThickness: maxYBalance,
       labels: labels,
       datasets: [{
         label: '',
         backgroundColor: 'rgb(17, 106, 204)',
-        data: dataset,
+        data: datasetBalance,
       }]
     };
 
@@ -148,10 +882,16 @@
       }
     };
   
-    const config = {
+    const configBalance = {
       type: 'bar',
-      data: data,
+      data: dataBalance,
       options: {
+        layout: {
+          padding: {
+              right: 150,
+          }
+        },
+        aspectRatio: 1000 / 165,
         plugins: {
           legend: {
             display: false,
@@ -181,15 +921,115 @@
             },
             borderColor: 'rgb(17, 106, 204)',
             position: 'right',
-            min: 0,
-            max: maxY,
             ticks: {
-              stepSize: maxY,
+              min: 0,
+              max: maxYBalance,
+              stepSize: maxYBalance,
               color: 'rgb(0 0 0)',
               font: {
                 size: 20,
                 weight: 500,
+                family: 'Work Sans'
+              },
+              callback(value) {
+                return `   ${value}₽   `;
+              }
+            },
+          },
+        },
+      },
+      plugins: [chartAreaBorder]
+    };
+
+    const myChartBalance = new Chart(
+      document.getElementById('balance-history'),
+      configBalance
+    );
+
+    const datasetTransactionIn = [0, 1000000, 500000, 200000, 2000000, 3000000, 2000000, 1000000, 500000, 200000, 2000000, 3000001];
+    const datasetTransactionOut = [1000000, 0, 1500000, 2000000, 200000, 300000, 1000000, 2000000, 1500000, 1200000, 1000000, 500000];
+    const datasetTransaction = [...datasetTransactionIn].map((e,i)=> e+datasetTransactionOut[i]);
+
+    const maxYTransaction = Math.max.apply(null, datasetTransaction);
+    const maxYTransactionIn = Math.max.apply(null, datasetTransactionIn);
+    const maxYTransactionOut = Math.max.apply(null, datasetTransactionOut);
+
+    let ratioYTransaction = maxYTransactionIn;
+    const datasetTransactions = [
+        {data: datasetTransactionIn,backgroundColor: 'rgb(118 202 102)'},
+        {data: datasetTransactionOut,backgroundColor: 'rgb(253 78 93)'},
+    ]
+    if(maxYTransactionIn < maxYTransactionOut) {
+      datasetTransactions.reverse();
+      ratioYTransaction = maxYTransactionOut;
+    }
+
+    const dataTransaction = {
+      maxBarThickness: maxYTransaction,
+      labels: labels,
+      datasets: datasetTransactions
+    };
+
+    const configTransaction = {
+      type: 'bar',
+      data: dataTransaction,
+      options: {
+        layout: {
+          padding: {
+              right: 150,
+          }
+        },
+        aspectRatio: 1000 / 165,
+        plugins: {
+          legend: {
+            display: false,
+          },
+          chartAreaBorder: {
+            borderColor: 'rgb(0 0 0)',
+            borderWidth: 1,
+          },
+        },
+        scales: {
+          x: {
+            stacked: true,
+            grid: {
+              display: false,
+            },
+            ticks: {
+              color: 'rgb(0 0 0)',
+              font: {
+                size: 20,
+                weight: 700,
                 family: 'Ubuntu'
+              },
+            }
+          },
+          y: {
+            stacked: true,
+            grid: {
+              display: false,
+            },
+            borderColor: 'rgb(17, 106, 204)',
+            position: 'right',
+            min: 0,
+            max: maxYTransaction,
+            ticks: {
+              stepSize: 1,
+              color: 'rgb(0 0 0)',
+              font: {
+                size: 20,
+                weight: 500,
+                family: 'Work Sans'
+              },
+              callback: function (value, index) {
+                console.log(value);
+                if (
+                  Math.ceil(value) == ratioYTransaction ||
+                  Math.ceil(value) == 0 ||
+                  Math.ceil(value) == maxYTransaction
+                ) {
+                  return `   ${Math.ceil(value)}₽ `;
+                }
               },
             },
           },
@@ -198,9 +1038,9 @@
       plugins: [chartAreaBorder]
     };
 
-    const myChart = new Chart(
-      document.getElementById('myChart'),
-      config
+    const myChartTransaction = new Chart(
+      document.getElementById('transaction-history'),
+      configTransaction
     );
   </script>
 </body>

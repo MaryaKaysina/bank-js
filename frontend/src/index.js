@@ -20,6 +20,7 @@ import {
   validateTransaction,
   fetchTransferFunds,
 } from './components/account-detail/account-detail';
+import { historyLoader, history } from './components/history/history';
 
 function createNotification(root, event, text) {
   const notificationBlock =
@@ -47,11 +48,533 @@ function createNotification(root, event, text) {
   }, 3000);
 }
 
+function historyPage(accountDetailList, auth) {
+  setChildren(document.body, historyLoader());
+
+  setTimeout(() => {
+    const historyData = history(accountDetailList);
+    setChildren(document.body, historyData.app);
+
+    historyData.historyBalance.reverse();
+    historyData.historyTransactions.reverse();
+
+    let labels = [];
+    let datasetBalance = [];
+    historyData.historyBalance.forEach((item) => {
+      labels.push(item.label);
+      datasetBalance.push(Number.parseInt(item.prevBalance));
+    });
+
+    const maxYBalance = Math.max.apply(null, datasetBalance);
+
+    const dataBalance = {
+      maxBarThickness: maxYBalance,
+      labels: labels,
+      datasets: [
+        {
+          label: '',
+          backgroundColor: 'rgb(17, 106, 204)',
+          data: datasetBalance,
+        },
+      ],
+    };
+
+    const chartAreaBorder = {
+      id: 'chartAreaBorder',
+      beforeDraw(chart, args, options) {
+        const {
+          ctx,
+          chartArea: { left, top, width, height },
+        } = chart;
+        ctx.save();
+        ctx.strokeStyle = options.borderColor;
+        ctx.lineWidth = options.borderWidth;
+        ctx.setLineDash(options.borderDash || []);
+        ctx.lineDashOffset = options.borderDashOffset;
+        ctx.strokeRect(left, top, width, height);
+        ctx.restore();
+      },
+    };
+
+    const configBalance = {
+      type: 'bar',
+      data: dataBalance,
+      options: {
+        layout: {
+          padding: {
+            right: 100,
+          },
+        },
+        aspectRatio: 1000 / 165,
+        plugins: {
+          legend: {
+            display: false,
+          },
+          chartAreaBorder: {
+            borderColor: 'rgb(0 0 0)',
+            borderWidth: 1,
+          },
+        },
+        scales: {
+          x: {
+            grid: {
+              display: false,
+            },
+            ticks: {
+              color: 'rgb(0 0 0)',
+              font: {
+                size: 20,
+                weight: 700,
+                family: 'Ubuntu',
+              },
+            },
+          },
+          y: {
+            grid: {
+              display: false,
+            },
+            borderColor: 'rgb(17, 106, 204)',
+            position: 'right',
+            ticks: {
+              min: 0,
+              max: maxYBalance,
+              stepSize: maxYBalance,
+              color: 'rgb(0 0 0)',
+              font: {
+                size: 20,
+                weight: 500,
+                family: 'Work Sans',
+              },
+              callback(value) {
+                return `   ${value}₽ `;
+              },
+            },
+          },
+        },
+      },
+      plugins: [chartAreaBorder],
+    };
+
+    new Chart(document.getElementById('balance-history'), configBalance);
+
+    let datasetTransactionIn = [];
+    let datasetTransactionOut = [];
+    historyData.historyTransactions.forEach((item) => {
+      datasetTransactionIn.push(Number.parseInt(item.historyTransactionIn));
+      datasetTransactionOut.push(Number.parseInt(item.historyTransactionOut));
+    });
+    const datasetTransaction = [...datasetTransactionIn].map(
+      (e, i) => e + datasetTransactionOut[i]
+    );
+    const maxYTransaction = Math.max.apply(null, datasetTransaction);
+    const maxYTransactionIn = Math.max.apply(null, datasetTransactionIn);
+    const maxYTransactionOut = Math.max.apply(null, datasetTransactionOut);
+
+    let ratioYTransaction = maxYTransactionIn;
+    const datasetTransactions = [
+      { data: datasetTransactionIn, backgroundColor: 'rgb(118 202 102)' },
+      { data: datasetTransactionOut, backgroundColor: 'rgb(253 78 93)' },
+    ];
+
+    if (maxYTransactionIn < maxYTransactionOut) {
+      datasetTransactions.reverse();
+      ratioYTransaction = maxYTransactionOut;
+    }
+
+    // console.log(maxYTransactionIn);
+    // console.log(maxYTransactionOut);
+    // console.log(ratioYTransaction);
+
+    const dataTransaction = {
+      maxBarThickness: maxYTransaction,
+      labels: labels,
+      datasets: datasetTransactions,
+    };
+
+    const configTransaction = {
+      type: 'bar',
+      data: dataTransaction,
+      options: {
+        layout: {
+          padding: {
+            right: 100,
+          },
+        },
+        aspectRatio: 1000 / 165,
+        plugins: {
+          legend: {
+            display: false,
+          },
+          chartAreaBorder: {
+            borderColor: 'rgb(0 0 0)',
+            borderWidth: 1,
+          },
+        },
+        scales: {
+          x: {
+            stacked: true,
+            grid: {
+              display: false,
+            },
+            ticks: {
+              color: 'rgb(0 0 0)',
+              font: {
+                size: 20,
+                weight: 700,
+                family: 'Ubuntu',
+              },
+            },
+          },
+          y: {
+            type: 'linear',
+            stacked: true,
+            grid: {
+              display: false,
+            },
+            borderColor: 'rgb(17, 106, 204)',
+            position: 'right',
+            min: 0,
+            max: maxYTransaction,
+            ticks: {
+              autoSkip: false,
+              stepSize: 1,
+              color: 'rgb(0 0 0)',
+              font: {
+                size: 20,
+                weight: 500,
+                family: 'Work Sans',
+              },
+              callback: function (value) {
+                console.log(Math.ceil(value));
+                if (
+                  Math.ceil(value) == ratioYTransaction ||
+                  Math.ceil(value) == 0 ||
+                  Math.ceil(value) == maxYTransaction
+                ) {
+                  return `   ${Math.ceil(value)}₽ `;
+                }
+              },
+              // callback(value) {
+              //   console.log(value + ': ' + ratioYTransaction);
+              //   if (
+              //     value == ratioYTransaction ||
+              //     value == 0 ||
+              //     value == maxYTransaction
+              //   ) {
+              //     return `   ${value}₽ `;
+              //   }
+              //   return null;
+              // },
+            },
+          },
+        },
+      },
+      plugins: [chartAreaBorder],
+    };
+
+    new Chart(
+      document.getElementById('transaction-history'),
+      configTransaction
+    );
+
+    const historyBlocks = document.querySelectorAll('.history');
+    const paginationBlock = document.querySelector('.pagination__block');
+    const paginationPage = document.querySelectorAll('.pagination__page');
+    const paginationNext = document.querySelector('.pagination__step--next');
+    const paginationPrev = document.querySelector('.pagination__step--prev');
+
+    if (paginationPage.length < 7) {
+      paginationNext.classList.add('hide');
+      paginationPrev.classList.add('hide');
+    }
+
+    paginationBlock.addEventListener('click', (e) => {
+      const currentPage = +paginationBlock.querySelector('.active').textContent;
+      const btnsShow = paginationBlock.querySelectorAll('.is-show');
+      const minBtnShow = btnsShow[0];
+      const maxBtnShow = btnsShow[btnsShow.length - 1];
+
+      if (e.target.closest('.pagination__next')) {
+        if (currentPage === paginationPage.length) {
+          const paginationStepNext =
+            paginationBlock.querySelector('.pagination__next');
+          paginationStepNext.classList.add('disable');
+          return;
+        }
+        const paginationStepPrev =
+          paginationBlock.querySelector('.pagination__prev');
+        paginationStepPrev.classList.remove('disable');
+
+        historyBlocks.forEach((block) => {
+          block.classList.add('is-hide');
+        });
+        paginationPage.forEach((btn) => {
+          btn.classList.remove('active');
+        });
+        const nextPage = document.querySelector(
+          `.history[data-page="${currentPage + 1}"]`
+        );
+        nextPage.classList.remove('is-hide');
+
+        const nextBtn = document.querySelector(
+          `.pagination__page[data-page="${currentPage + 1}"]`
+        );
+        nextBtn.classList.add('active');
+        if (currentPage + 1 > +maxBtnShow.textContent) {
+          nextBtn.classList.add('is-show');
+          nextBtn.classList.remove('is-hide');
+          minBtnShow.classList.add('is-hide');
+          minBtnShow.classList.remove('is-show');
+          if (currentPage + 1 === 7) {
+            btnsShow[1].classList.add('is-hide');
+            btnsShow[1].classList.remove('is-show');
+            const paginationStepPrev = paginationBlock.querySelector(
+              '.pagination__step--prev'
+            );
+            paginationStepPrev.classList.remove('hide');
+          }
+          if (currentPage + 1 === paginationPage.length) {
+            const prevBtn = document.querySelector(
+              `.pagination__page[data-page="${currentPage - 4}"]`
+            );
+            prevBtn.classList.remove('is-hide');
+            prevBtn.classList.add('is-show');
+            const paginationStepNext = paginationBlock.querySelector(
+              '.pagination__step--next'
+            );
+            paginationStepNext.classList.add('hide');
+          }
+        }
+      }
+
+      if (e.target.closest('.pagination__prev')) {
+        if (currentPage === 1) {
+          const paginationStepPrev =
+            paginationBlock.querySelector('.pagination__prev');
+          paginationStepPrev.classList.add('disable');
+          return;
+        }
+        const paginationStepNext =
+          paginationBlock.querySelector('.pagination__next');
+        paginationStepNext.classList.remove('disable');
+
+        historyBlocks.forEach((block) => {
+          block.classList.add('is-hide');
+        });
+        paginationPage.forEach((btn) => {
+          btn.classList.remove('active');
+        });
+        const nextPage = document.querySelector(
+          `.history[data-page="${currentPage - 1}"]`
+        );
+        nextPage.classList.remove('is-hide');
+
+        const nextBtn = document.querySelector(
+          `.pagination__page[data-page="${currentPage - 1}"]`
+        );
+        nextBtn.classList.add('active');
+        if (currentPage - 1 < +minBtnShow.textContent) {
+          nextBtn.classList.add('is-show');
+          nextBtn.classList.remove('is-hide');
+          maxBtnShow.classList.add('is-hide');
+          maxBtnShow.classList.remove('is-show');
+          if (currentPage - 1 === 1) {
+            const nextBtn = document.querySelector(
+              `.pagination__page[data-page="${currentPage + 4}"]`
+            );
+            nextBtn.classList.remove('is-hide');
+            nextBtn.classList.add('is-show');
+            const paginationStepPrev = paginationBlock.querySelector(
+              '.pagination__step--prev'
+            );
+            paginationStepPrev.classList.add('hide');
+          }
+          if (currentPage - 1 === paginationPage.length - 6) {
+            btnsShow[btnsShow.length - 2].classList.add('is-hide');
+            btnsShow[btnsShow.length - 2].classList.remove('is-show');
+            maxBtnShow.classList.add('is-hide');
+            maxBtnShow.classList.remove('is-show');
+            const paginationStepNext = paginationBlock.querySelector(
+              '.pagination__step--next'
+            );
+            paginationStepNext.classList.remove('hide');
+          }
+        }
+      }
+
+      if (e.target.closest('.pagination__step--next')) {
+        const paginationNext =
+          paginationBlock.querySelector('.pagination__next');
+        paginationNext.classList.add('disable');
+
+        const paginationPrev =
+          paginationBlock.querySelector('.pagination__prev');
+        paginationPrev.classList.remove('disable');
+
+        historyBlocks.forEach((block) => {
+          block.classList.add('is-hide');
+        });
+        paginationPage.forEach((btn) => {
+          btn.classList.remove('active');
+          btn.classList.remove('is-show');
+          btn.classList.add('is-hide');
+        });
+        const nextPage = document.querySelector(
+          `.history[data-page="${paginationPage.length}"]`
+        );
+        nextPage.classList.remove('is-hide');
+
+        const nextBtn = document.querySelector(
+          `.pagination__page[data-page="${paginationPage.length}"]`
+        );
+        nextBtn.classList.add('active');
+
+        const paginationStepPrev = paginationBlock.querySelector(
+          '.pagination__step--prev'
+        );
+        paginationStepPrev.classList.remove('hide');
+        const paginationStepNext = paginationBlock.querySelector(
+          '.pagination__step--next'
+        );
+        paginationStepNext.classList.add('hide');
+
+        for (let i = 0; i < 6; i++) {
+          const nextBtn = document.querySelector(
+            `.pagination__page[data-page="${paginationPage.length - i}"]`
+          );
+          nextBtn.classList.add('is-show');
+          nextBtn.classList.remove('is-hide');
+        }
+      }
+
+      if (e.target.closest('.pagination__step--prev')) {
+        const paginationNext =
+          paginationBlock.querySelector('.pagination__next');
+        paginationNext.classList.remove('disable');
+
+        const paginationPrev =
+          paginationBlock.querySelector('.pagination__prev');
+        paginationPrev.classList.add('disable');
+
+        historyBlocks.forEach((block) => {
+          block.classList.add('is-hide');
+        });
+        paginationPage.forEach((btn) => {
+          btn.classList.remove('active');
+          btn.classList.remove('is-show');
+          btn.classList.add('is-hide');
+        });
+        const nextPage = document.querySelector(`.history[data-page="${1}"]`);
+        nextPage.classList.remove('is-hide');
+
+        const nextBtn = document.querySelector(
+          `.pagination__page[data-page="${1}"]`
+        );
+        nextBtn.classList.add('active');
+
+        const paginationStepPrev = paginationBlock.querySelector(
+          '.pagination__step--prev'
+        );
+        paginationStepPrev.classList.add('hide');
+        const paginationStepNext = paginationBlock.querySelector(
+          '.pagination__step--next'
+        );
+        paginationStepNext.classList.remove('hide');
+
+        for (let i = 0; i < 6; i++) {
+          const nextBtn = document.querySelector(
+            `.pagination__page[data-page="${1 + i}"]`
+          );
+          nextBtn.classList.add('is-show');
+          nextBtn.classList.remove('is-hide');
+        }
+      }
+
+      if (e.target.closest('.pagination__page')) {
+        if (+e.target.dataset.page === paginationPage.length) {
+          const paginationNext =
+            paginationBlock.querySelector('.pagination__next');
+          paginationNext.classList.add('disable');
+        }
+
+        if (+e.target.dataset.page === 1) {
+          const paginationPrev =
+            paginationBlock.querySelector('.pagination__prev');
+          paginationPrev.classList.remove('disable');
+        }
+
+        historyBlocks.forEach((block) => {
+          block.classList.add('is-hide');
+        });
+        paginationPage.forEach((btn) => {
+          btn.classList.remove('active');
+          btn.classList.remove('is-show');
+          btn.classList.add('is-hide');
+        });
+        const nextPage = document.querySelector(
+          `.history[data-page="${e.target.dataset.page}"]`
+        );
+        nextPage.classList.remove('is-hide');
+
+        const nextBtn = document.querySelector(
+          `.pagination__page[data-page="${e.target.dataset.page}"]`
+        );
+        nextBtn.classList.add('active');
+
+        if (+e.target.dataset.page < paginationPage.length - 4) {
+          for (let i = 0; i < 5; i++) {
+            const nextBtn = document.querySelector(
+              `.pagination__page[data-page="${+e.target.dataset.page + i}"]`
+            );
+            nextBtn.classList.add('is-show');
+            nextBtn.classList.remove('is-hide');
+          }
+
+          const paginationStepPrev = paginationBlock.querySelector(
+            '.pagination__step--prev'
+          );
+          paginationStepPrev.classList.remove('hide');
+          const paginationStepNext = paginationBlock.querySelector(
+            '.pagination__step--next'
+          );
+          paginationStepNext.classList.remove('hide');
+        } else {
+          for (let i = 0; i < 6; i++) {
+            const nextBtn = document.querySelector(
+              `.pagination__page[data-page="${paginationPage.length - i}"]`
+            );
+            nextBtn.classList.add('is-show');
+            nextBtn.classList.remove('is-hide');
+          }
+
+          const paginationStepPrev = paginationBlock.querySelector(
+            '.pagination__step--prev'
+          );
+          paginationStepPrev.classList.remove('hide');
+          const paginationStepNext = paginationBlock.querySelector(
+            '.pagination__step--next'
+          );
+          paginationStepNext.classList.add('hide');
+        }
+      }
+    });
+
+    const btnBack = document.querySelector('.back');
+    btnBack.addEventListener('click', async () => {
+      try {
+        const cards = await getAccountDetail(auth, accountDetailList.account);
+        accountDetailPage(cards, auth);
+      } catch (err) {
+        createNotification(document.body, 'error', err.message);
+      }
+    });
+  }, 300);
+}
+
 function accountDetailPage(accountDetailList, auth) {
   setChildren(document.body, accountDetailLoader());
 
   setTimeout(() => {
-    console.log(accountDetailList);
     const accountDetailData = accountDetail(accountDetailList);
     setChildren(document.body, accountDetailData.app);
 
@@ -254,7 +777,6 @@ function accountDetailPage(accountDetailList, auth) {
         };
         try {
           const card = await fetchTransferFunds(auth, transaction);
-          console.log(card);
           const local = localStorage.getItem('accounts');
           const localTransferAccounts = local ? local.split(',') : [];
 
@@ -264,12 +786,26 @@ function accountDetailPage(accountDetailList, auth) {
 
           localStorage.setItem('accounts', localTransferAccounts);
           accountDetailPage(card, auth);
+          setTimeout(() => {
+            createNotification(
+              document.body,
+              'success',
+              'Перевод успешно выполнен!'
+            );
+          }, 300);
         } catch (err) {
           btnError.classList.add('error');
           btnError.textContent = err.message;
           btnError.classList.remove('hidden');
         }
       }
+    });
+
+    const historyBlocks = document.querySelectorAll('.history-block');
+    historyBlocks.forEach((block) => {
+      block.addEventListener('click', () => {
+        historyPage(accountDetailList, auth);
+      });
     });
   }, 300);
 }
@@ -431,71 +967,15 @@ function authorizationPage() {
 
 authorizationPage();
 
-// const dataset = {
-//   account: '74213041477477406320783754',
-//   balance: 977800.47,
-//   mine: true,
-//   transactions: [
-//     {
-//       date: '2021-09-21T10:19:41.656Z',
-//       from: '03075161147576483308375751',
-//       to: '74213041477477406320783754',
-//       amount: 5299.09,
-//     },
-//     {
-//       date: '2021-09-23T01:57:20.223Z',
-//       from: '74213041477477406320783754',
-//       to: '20676535650685341466086362',
-//       amount: 8973.71,
-//     },
-//     {
-//       date: '2021-10-20T16:20:49.799Z',
-//       from: '74213041477477406320783754',
-//       to: '51086782655845204744803707',
-//       amount: 736.58,
-//     },
-//     {
-//       date: '2021-10-19T22:41:24.671Z',
-//       from: '74213041477477406320783754',
-//       to: '58260448852541766126032272',
-//       amount: 9035.65,
-//     },
-//     {
-//       date: '2021-11-19T18:23:13.510Z',
-//       from: '74213041477477406320783754',
-//       to: '48578624073520776558718428',
-//       amount: 6804.39,
-//     },
-//     {
-//       date: '2021-11-21T09:56:23.656Z',
-//       from: '06063054426041078483263725',
-//       to: '74213041477477406320783754',
-//       amount: 3858.05,
-//     },
-//   ],
-// };
-
-// console.log(dataset);
-
-// let currentBalance = dataset.balance;
-
-// for (let i = 0; i < 6; i++) {
-//   const currentDate = new Date('2021-12-21');
-//   const prevDate = new Date(currentDate.setMonth(currentDate.getMonth() - i));
-//   const prevMonth = prevDate.getMonth();
-//   const prevYear = prevDate.getFullYear();
-//   let tranPrevMonth = 0;
-
-//   dataset.transactions.forEach((item) => {
-//     const tranMonth = new Date(item.date).getMonth();
-//     const tranYear = new Date(item.date).getFullYear();
-//     if (tranMonth === prevMonth && tranYear === prevYear) {
-//       tranPrevMonth = tranPrevMonth + item.amount;
+// animation: {
+//   onComplete: () => {
+//     delayed = true;
+//   },
+//   delay: (context) => {
+//     let delay = 0;
+//     if (context.type === 'data' && context.mode === 'default' && !delayed) {
+//       delay = context.dataIndex * 300 + context.datasetIndex * 100;
 //     }
-//   });
-
-//   let prevBalance = currentBalance - tranPrevMonth;
-//   currentBalance = prevBalance;
-
-//   console.log(prevMonth + ' ' + prevYear + ': ' + prevBalance);
-// }
+//     return delay;
+//   },
+// },

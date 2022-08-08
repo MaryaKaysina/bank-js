@@ -100,8 +100,12 @@ export function accountDetail(account) {
       });
 
       let prevBalance = currentBalance - tranPrevMonth;
+      if (i === 0) {
+        historyBalance.push({ label: label, prevBalance: currentBalance });
+      } else {
+        historyBalance.push({ label: label, prevBalance: prevBalance });
+      }
       currentBalance = prevBalance;
-      historyBalance.push({ label: label, prevBalance: prevBalance });
     }
   }
 
@@ -159,11 +163,11 @@ export function accountDetail(account) {
             </button>
           </div>
         </div>
-        <div class="dynamic bg-wite">
+        <div class="dynamic bg-wite history-block">
           <h4 class="tran__title">Динамика баланса</h4>
           <div><canvas id="account-detail" height="100%"></canvas></div>
         </div>
-        <div class="history bg-grey">
+        <div class="history bg-grey history-block">
           <h4 class="tran__title">История переводов</h4>
           <div class="table-history">
             <div class="thead-history">

@@ -1,0 +1,74 @@
+.dynamic--history {
+  width: 100%;
+  height: 288px;
+  cursor: auto;
+}
+
+.history__tabs {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.history--history {
+  cursor: auto;
+}
+
+.history.is-hide {
+  display: none;
+}
+
+.pagination__block {
+  display: flex;
+  margin: 30px auto;
+}
+
+.pagination__prev,
+.pagination__step,
+.pagination__page,
+.pagination__next {
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  border-radius: 7px;
+  font-family: 'Ubuntu';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 24px;
+  color: #9CA3AF;
+}
+
+.pagination__page.active {
+  background: #116ACC;
+  color: #FFFFFF;
+}
+
+.pagination__step.hide {
+  display: none;
+}
+
+.pagination__next,
+.pagination__prev {
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.pagination__prev {
+  background-image: url('../../assets/arrow-prev.svg');
+}
+
+.pagination__next {
+  background-image: url('../../assets/arrow-next.svg');
+}
+
+.pagination__page.is-hide {
+  display: none;
+}
+
+.pagination__next.disable,
+.pagination__prev.disable {
+  cursor: auto;
+}
