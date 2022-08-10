@@ -113,10 +113,10 @@ export function accountDetail(account) {
     <div class="container container--header">
       <a href="/" class="header__link">Coin.</a>
       <nav class="header__nav nav">
-        <button class="nav__btn">Банкоматы</button>
-        <button class="nav__btn">Счета</button>
-        <button class="nav__btn">Валюта</button>
-        <button class="nav__btn">Выйти</button>
+      <button class="nav__btn" data-page="atm">Банкоматы</button>
+      <button class="nav__btn" data-page="accounts">Счета</button>
+      <button class="nav__btn" data-page="currency">Валюта</button>
+      <button class="nav__btn" data-page="out">Выйти</button>
       </nav>
     </div>
   </header>
@@ -135,7 +135,7 @@ export function accountDetail(account) {
       <div class="block block--main">
         <div class="tran bg-grey">
           <h4 class="tran__title">Новый перевод</h4>
-          <div action="#" class="form" method="post">
+          <div class="form">
             <div class="form__row">
               <p class="form__label form__label--detail">Номер счёта получателя</p>
               <div class="account">

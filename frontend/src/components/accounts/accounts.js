@@ -74,10 +74,10 @@ export function accounts(accounts) {
     <div class="container container--header">
       <a href="/" class="header__link">Coin.</a>
       <nav class="header__nav nav">
-        <button class="nav__btn">Банкоматы</button>
-        <button class="nav__btn active">Счета</button>
-        <button class="nav__btn">Валюта</button>
-        <button class="nav__btn">Выйти</button>
+        <button class="nav__btn" data-page="atm">Банкоматы</button>
+        <button class="nav__btn active" data-page="accounts">Счета</button>
+        <button class="nav__btn" data-page="currency">Валюта</button>
+        <button class="nav__btn" data-page="out">Выйти</button>
       </nav>
     </div>
   </header>

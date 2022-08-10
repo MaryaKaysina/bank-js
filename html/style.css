@@ -1015,3 +1015,212 @@ input[type=number] {
 .pagination__prev.disable {
   cursor: auto;
 }
+
+/* currency */
+.block--mb56 {
+  margin-bottom: 56px;
+}
+
+.block--currency {
+  display: grid;
+  grid-template-areas: 
+  "your runtime"
+  "exchange runtime";
+  gap: 44px 49px;
+  grid-template-columns: 43.8% 56.2%;
+}
+
+.your {
+  padding: 50px;
+  grid-area: your;
+}
+
+.exchange {
+  padding: 50px;
+  padding-bottom: 62px;
+  grid-area: exchange;
+}
+
+.runtime {
+  padding: 50px;
+  padding-bottom: 79px;
+  grid-area: runtime;
+}
+
+.your__row {
+  display: flex;
+  align-items: baseline; 
+  margin-bottom: 0.5em;
+  font-family: 'Work Sans';
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 23px;
+  letter-spacing: 0.1em;
+}
+
+.your__row:not(:last-child) {
+  margin-bottom: 25px;
+}
+
+.your__row::before {
+  content: '';
+  border-bottom: 1px dashed #000000;
+  flex-grow: 1;
+  order: 2;
+  margin: 0 5px;
+}
+
+.your__row--in.your__row::before {
+  border-bottom: 1px dashed #76CA66;
+}
+
+.your__row--out.your__row::before {
+  border-bottom: 1px dashed #FD4E5D;
+}
+
+.your__val--runtime {
+  position: relative;
+  padding-right: 30px;
+}
+
+.your__val--runtime::after {
+  content: "";
+  position: absolute;
+  top: -4px;
+  right: 0;
+  border: 10px solid transparent;
+  border-bottom: 10px solid #76CA66;
+}
+
+.your__row--out .your__val--runtime::after {
+  top: 5px;
+  border: 10px solid transparent;
+  border-top: 10px solid #FD4E5D;
+}
+
+.your__title {
+  padding-right: 5px;
+  font-weight: 600;
+}
+
+.your__val {
+  order: 3;
+  padding-left: 5px;
+}
+
+.form--exchange {
+  display: grid;
+  grid-template-areas: 
+  "currency send"
+  "sum send";
+}
+
+.form__row--currency {
+  grid-area: currency;
+}
+
+.form__row--sum {
+  grid-area: sum;
+  margin: 0;
+}
+
+.send--currency {
+  grid-area: send;
+  margin: 0;
+  padding: 13px;
+}
+
+.form__row--exchange {
+  justify-content: flex-start;
+}
+
+.form__label--exchange {
+  margin-bottom: 0!important;
+  margin-right: 18px;
+  align-self: auto;
+}
+
+.form__label--exchange:last-of-type {
+  margin-left: 18px;
+}
+
+.form__label--sum:last-of-type {
+  margin: 0;
+  width: 100%;
+}
+
+.form__input--exchange {
+  width: 76%;
+}
+
+.account__title--exchange {
+  max-width: 134px;
+  color: #000000;
+}
+
+.account__title--exchange:placeholder-shown, 
+.account__title--exchange::placeholder {
+  color: #000000;
+  opacity: 1;
+}
+
+.exc-currency {
+  position: relative;
+  width: min-content;
+}
+
+.exc-currency::after {
+  content: "";
+  position: absolute;
+  height: 0;
+  width: 0;
+  border-style: solid;
+  border-color: #333 transparent transparent transparent;
+  border-width: 5px;
+  position: absolute;
+  right: 21.5px;
+  top: 50%;
+  margin-top: -2.5px;
+  pointer-events: none;
+  transition: transform .3s ease-in-out;
+}
+
+.exc-currency.active::after {
+  transform: rotate(180deg);
+  transform-origin: 50% 20%;
+}
+
+.exc-currency__list {
+  position: absolute;
+  z-index: 10;
+  margin-top: 2px;
+  padding: 10px 0;
+  width: 100%;
+  list-style: none;
+  background: #FFFFFF;
+  border-radius: 7px;
+  filter: drop-shadow(0px 5px 20px rgba(0, 0, 0, 0.25));
+}
+
+.exc-currency__item {
+  padding: 10px 16px;
+  background-repeat: no-repeat;
+  background-position: 94% center;
+  font-family: 'Ubuntu';
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: -0.01em;
+  color: #374151;
+  cursor: pointer;
+  transition: background .3s ease-in-out;
+}
+
+.exc-currency__item:hover {
+  background-color: #A0C3FF;
+}
+
+.exc-currency__list.is-hide {
+  opacity: 0;
+  z-index: -1;
+}

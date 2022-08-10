@@ -21,6 +21,14 @@ import {
   fetchTransferFunds,
 } from './components/account-detail/account-detail';
 import { historyLoader, history } from './components/history/history';
+import {
+  currencyLoader,
+  currency,
+  getAllCurrencies,
+  getCurrencies,
+  validateCurrencyChange,
+  fetchCurrencyBuy,
+} from './components/currency/currency';
 
 function createNotification(root, event, text) {
   const notificationBlock =
@@ -46,6 +54,35 @@ function createNotification(root, event, text) {
     const notificationBlock = document.querySelector('.notifications');
     notificationBlock.remove();
   }, 3000);
+}
+
+function navigate(auth, socket = null) {
+  const navBtns = document.querySelectorAll('.nav__btn');
+
+  navBtns.forEach((btn) => {
+    btn.addEventListener('click', async (e) => {
+      if (socket) {
+        socket.close();
+      }
+
+      if (e.target.dataset.page === 'currency') {
+        try {
+          const allCurrencies = await getAllCurrencies(auth);
+          const currencies = await getCurrencies(auth);
+          currencyPage(auth, allCurrencies, currencies);
+        } catch (err) {
+          createNotification(document.body, 'error', err.message);
+        }
+      }
+      if (e.target.dataset.page === 'accounts') {
+        try {
+          accountsPage(auth);
+        } catch (err) {
+          createNotification(document.body, 'error', err.message);
+        }
+      }
+    });
+  });
 }
 
 function historyPage(accountDetailList, auth) {
@@ -181,10 +218,6 @@ function historyPage(accountDetailList, auth) {
       ratioYTransaction = maxYTransactionOut;
     }
 
-    // console.log(maxYTransactionIn);
-    // console.log(maxYTransactionOut);
-    // console.log(ratioYTransaction);
-
     const dataTransaction = {
       maxBarThickness: maxYTransaction,
       labels: labels,
@@ -226,7 +259,6 @@ function historyPage(accountDetailList, auth) {
             },
           },
           y: {
-            type: 'linear',
             stacked: true,
             grid: {
               display: false,
@@ -236,8 +268,7 @@ function historyPage(accountDetailList, auth) {
             min: 0,
             max: maxYTransaction,
             ticks: {
-              autoSkip: false,
-              stepSize: 1,
+              stepSize: 100,
               color: 'rgb(0 0 0)',
               font: {
                 size: 20,
@@ -245,26 +276,18 @@ function historyPage(accountDetailList, auth) {
                 family: 'Work Sans',
               },
               callback: function (value) {
-                console.log(Math.ceil(value));
                 if (
-                  Math.ceil(value) == ratioYTransaction ||
                   Math.ceil(value) == 0 ||
-                  Math.ceil(value) == maxYTransaction
+                  Math.ceil(value) == Math.ceil(maxYTransaction)
                 ) {
-                  return `   ${Math.ceil(value)}₽ `;
+                  return `    ${Math.ceil(value)}₽    `;
+                }
+                if (
+                  Math.ceil(value / 100) == Math.ceil(ratioYTransaction / 100)
+                ) {
+                  return `    ${Math.ceil(ratioYTransaction)}₽    `;
                 }
               },
-              // callback(value) {
-              //   console.log(value + ': ' + ratioYTransaction);
-              //   if (
-              //     value == ratioYTransaction ||
-              //     value == 0 ||
-              //     value == maxYTransaction
-              //   ) {
-              //     return `   ${value}₽ `;
-              //   }
-              //   return null;
-              // },
             },
           },
         },
@@ -568,6 +591,8 @@ function historyPage(accountDetailList, auth) {
         createNotification(document.body, 'error', err.message);
       }
     });
+
+    navigate(auth);
   }, 300);
 }
 
@@ -807,21 +832,29 @@ function accountDetailPage(accountDetailList, auth) {
         historyPage(accountDetailList, auth);
       });
     });
+
+    navigate(auth);
   }, 300);
 }
 
-function accountsPage(accountsList, auth, sort = '') {
+function accountsPage(auth, sort = '') {
   setChildren(document.body, accountsLoader());
 
-  setTimeout(() => {
+  setTimeout(async () => {
+    const accountsList = await getAccounts(auth);
+    if (sort == '') {
+      setChildren(document.body, accounts(accountsList));
+    } else {
+      setChildren(document.body, accountsSorted(accountsList, sort));
+    }
+
     setChildren(document.body, accounts(accountsList));
 
     const btnNewAccount = document.querySelector('.create');
     btnNewAccount.addEventListener('click', async () => {
       try {
         await createAccount(auth);
-        const newCards = await getAccounts(auth);
-        accountsPage(newCards, auth);
+        accountsPage(auth);
         setTimeout(() => {
           createNotification(
             document.body,
@@ -856,11 +889,7 @@ function accountsPage(accountsList, auth, sort = '') {
             item.classList.remove('active');
           });
           item.classList.add('active');
-          setChildren(
-            document.body,
-            accountsSorted(accountsList, item.dataset.sort)
-          );
-          accountsPage(accountsList, auth, item.dataset.sort);
+          accountsPage(auth, item.dataset.sort);
         });
       });
 
@@ -886,6 +915,8 @@ function accountsPage(accountsList, auth, sort = '') {
         }
       });
     });
+
+    navigate(auth);
   }, 300);
 }
 
@@ -953,8 +984,7 @@ function authorizationPage() {
         };
         try {
           const token = await fetchAuth(auth);
-          const cards = await getAccounts(token.token);
-          accountsPage(cards, token.token);
+          accountsPage(token.token);
         } catch (err) {
           btnError.classList.add('error');
           btnError.textContent = err.message;
@@ -965,7 +995,119 @@ function authorizationPage() {
   }, 300);
 }
 
+function currencyPage(auth, allCurrencies, currencies) {
+  setChildren(document.body, currencyLoader());
+
+  setTimeout(() => {
+    setChildren(document.body, currency(allCurrencies, currencies));
+
+    const inputsCurrency = document.querySelectorAll(
+      '.account__title--exchange'
+    );
+    inputsCurrency.forEach((input) => {
+      input.addEventListener('click', (e) => {
+        inputsCurrency.forEach(() => {
+          const errMessage = document.querySelector('.send-tran');
+          errMessage.classList.remove('error');
+          errMessage.classList.add('hidden');
+        });
+        const target = e.target.dataset.change;
+        const list = document.querySelector(`[data-currency="${target}"]`);
+        const lists = document.querySelectorAll(`[data-currency]`);
+
+        lists.forEach((listCur) => {
+          if (list !== listCur) {
+            listCur.classList.add('is-hide');
+          }
+        });
+
+        if (list.classList.contains('is-hide')) {
+          list.classList.remove('is-hide');
+        } else {
+          list.classList.add('is-hide');
+        }
+
+        const items = list.querySelectorAll('.exc-currency__item');
+        items.forEach((item) => {
+          item.addEventListener('click', () => {
+            input.value = item.textContent;
+            list.classList.add('is-hide');
+          });
+        });
+      });
+    });
+
+    const sumInput = document.querySelector('[name="sum"]');
+    sumInput.addEventListener('input', () => {
+      const errMessage = document.querySelector('.send-tran');
+      errMessage.classList.remove('error');
+      errMessage.classList.add('hidden');
+    });
+
+    const btnChange = document.querySelector('.send--currency');
+    btnChange.addEventListener('click', async () => {
+      const sum = document.querySelector('[name="sum"]').value || 0;
+      const from = document.querySelector('[name="exchange-from"]').value;
+      const to = document.querySelector('[name="exchange-to"]').value;
+      const errMessage = document.querySelector('.send-tran');
+
+      try {
+        validateCurrencyChange(sum, from, to);
+        const body = {};
+        body.from = from;
+        body.to = to;
+        body.amount = sum;
+        const currencies = await fetchCurrencyBuy(auth, body);
+        currencyPage(auth, allCurrencies, currencies);
+      } catch (err) {
+        errMessage.classList.add('error');
+        errMessage.textContent = err.message;
+        errMessage.classList.remove('hidden');
+      }
+    });
+
+    const socket = new WebSocket('ws://localhost:3000/currency-feed/');
+
+    socket.onmessage = function (event) {
+      const currencyFeed = JSON.parse(event.data);
+      if (currencyFeed.type === 'EXCHANGE_RATE_CHANGE') {
+        const block = document.querySelector('.runtime .your__table');
+        const li = el('li', { class: `your__row` });
+
+        li.innerHTML = `<span class="your__title">
+            ${currencyFeed.from}/${currencyFeed.to}
+          </span>
+          <span class="your__val your__val--runtime">
+            ${currencyFeed.rate}
+          </span>`;
+
+        if (currencyFeed.change == -1) {
+          li.classList.add('your__row--out');
+        } else {
+          li.classList.add('your__row--in');
+        }
+        const rows = document.querySelectorAll('.runtime .your__row');
+        if (rows.length > 20) {
+          block.children[0].remove();
+        }
+        block.append(li);
+      }
+    };
+
+    socket.onerror = function (error) {
+      console.log(`[error] ${error.message}`);
+    };
+
+    navigate(auth, socket);
+  }, 300);
+}
+
 authorizationPage();
+
+// {"type":"EXCHANGE_RATE_CHANGE","from":"AUD","to":"CAD","rate":84.23,"change":1}
+// {"type":"EXCHANGE_RATE_CHANGE","from":"AUD","to":"UAH","rate":36.74,"change":1}
+// {"type":"EXCHANGE_RATE_CHANGE","from":"USD","to":"BTC","rate":34.85,"change":-1}
+// {"type":"EXCHANGE_RATE_CHANGE","from":"EUR","to":"CHF","rate":30.5,"change":1}
 
 // animation: {
 //   onComplete: () => {
@@ -979,3 +1121,10 @@ authorizationPage();
 //     return delay;
 //   },
 // },
+
+// const socket = new WebSocket('ws://localhost:3000/currency-feed/');
+
+// socket.onmessage = function (event) {
+//   const currencyFeed = JSON.parse(event.data);
+//   console.log(currencyFeed.type);
+// }
