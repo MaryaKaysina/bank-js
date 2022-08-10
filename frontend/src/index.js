@@ -29,6 +29,7 @@ import {
   validateCurrencyChange,
   fetchCurrencyBuy,
 } from './components/currency/currency';
+import { atmLoader, atm, getAtm } from './components/atm/atm';
 
 function createNotification(root, event, text) {
   const notificationBlock =
@@ -77,6 +78,20 @@ function navigate(auth, socket = null) {
       if (e.target.dataset.page === 'accounts') {
         try {
           accountsPage(auth);
+        } catch (err) {
+          createNotification(document.body, 'error', err.message);
+        }
+      }
+      if (e.target.dataset.page === 'atm') {
+        try {
+          atmPage(auth);
+        } catch (err) {
+          createNotification(document.body, 'error', err.message);
+        }
+      }
+      if (e.target.dataset.page === 'out') {
+        try {
+          authorizationPage();
         } catch (err) {
           createNotification(document.body, 'error', err.message);
         }
@@ -1102,29 +1117,50 @@ function currencyPage(auth, allCurrencies, currencies) {
   }, 300);
 }
 
+function atmPage(auth) {
+  setChildren(document.body, atmLoader());
+  const script = document.querySelector(
+    "[src='https://api-maps.yandex.ru/2.1/?apikey=ead4f884-175f-4708-88bc-af0468c3ce39&lang=ru_RU']"
+  );
+
+  if (!script) {
+    const script = el('script', {
+      src: 'https://api-maps.yandex.ru/2.1/?apikey=ead4f884-175f-4708-88bc-af0468c3ce39&lang=ru_RU',
+      type: 'text/javascript',
+    });
+    const head = document.querySelector('head');
+    head.append(script);
+  }
+
+  setTimeout(async () => {
+    setChildren(document.body, atm());
+
+    const atms = await getAtm(auth);
+
+    // eslint-disable-next-line no-undef
+    ymaps.ready(init);
+    function init() {
+      // eslint-disable-next-line no-undef
+      const myMap = new ymaps.Map('map', {
+        center: [55.76, 37.64],
+        zoom: 10,
+      });
+
+      atms.forEach((atm) => {
+        // eslint-disable-next-line no-undef
+        const myPlacemark = new ymaps.GeoObject({
+          geometry: {
+            type: 'Point',
+            coordinates: [atm.lat, atm.lon],
+          },
+        });
+
+        myMap.geoObjects.add(myPlacemark);
+      });
+    }
+
+    navigate(auth);
+  }, 300);
+}
+
 authorizationPage();
-
-// {"type":"EXCHANGE_RATE_CHANGE","from":"AUD","to":"CAD","rate":84.23,"change":1}
-// {"type":"EXCHANGE_RATE_CHANGE","from":"AUD","to":"UAH","rate":36.74,"change":1}
-// {"type":"EXCHANGE_RATE_CHANGE","from":"USD","to":"BTC","rate":34.85,"change":-1}
-// {"type":"EXCHANGE_RATE_CHANGE","from":"EUR","to":"CHF","rate":30.5,"change":1}
-
-// animation: {
-//   onComplete: () => {
-//     delayed = true;
-//   },
-//   delay: (context) => {
-//     let delay = 0;
-//     if (context.type === 'data' && context.mode === 'default' && !delayed) {
-//       delay = context.dataIndex * 300 + context.datasetIndex * 100;
-//     }
-//     return delay;
-//   },
-// },
-
-// const socket = new WebSocket('ws://localhost:3000/currency-feed/');
-
-// socket.onmessage = function (event) {
-//   const currencyFeed = JSON.parse(event.data);
-//   console.log(currencyFeed.type);
-// }

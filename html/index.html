@@ -6,6 +6,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://api-maps.yandex.ru/2.1/?apikey=ваш API-ключ&lang=ru_RU" type="text/javascript">
+  </script>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -14,588 +16,479 @@
       <div class="container container--header">
         <a href="/" class="header__link">Coin.</a>
         <nav class="header__nav nav">
-          <button class="nav__btn">Банкоматы</button>
-          <button class="nav__btn">Счета</button>
-          <button class="nav__btn active">Валюта</button>
-          <button class="nav__btn">Выйти</button>
+          <button class="nav__btn active" data-page="atm">Банкоматы</button>
+          <button class="nav__btn" data-page="accounts">Счета</button>
+          <button class="nav__btn" data-page="currency">Валюта</button>
+          <button class="nav__btn" data-page="out">Выйти</button>
         </nav>
       </div>
     </header>
-    <main class="currency">
+    <main class="atm">
       <div class="container">
         <div class="block block--mb30 block--mb56">
-          <h2 class="title">Валютный обмен</h2>
+          <h2 class="title">Карта банкоматов</h2>
         </div>
-        <div class="block block--currency">
-          <div class="your bg-wite">
-            <h4 class="tran__title">Ваши валюты</h4>
-            <ul class="your__table">
-              <li class="your__row">
-                <span class="your__title">ETH</span>
-                <span class="your__val">6.3123545131</span>
-              </li>
-              <li class="your__row">
-                <span class="your__title">BTC</span>
-                <span class="your__val">1.4543231123</span>
-              </li>
-              <li class="your__row">
-                <span class="your__title">JPY</span>
-                <span class="your__val">32 151 225 122</span>
-              </li>
-              <li class="your__row">
-                <span class="your__title">USD</span>
-                <span class="your__val">1 151 225 122</span>
-              </li>
-              <li class="your__row">
-                <span class="your__title">RUB</span>
-                <span class="your__val">5 151 225 122</span>
-              </li>
-              <li class="your__row">
-                <span class="your__title">BYR</span>
-                <span class="your__val">1 225 122</span>
-              </li>
-            </ul>
-          </div>
-          <div class="exchange bg-wite">
-            <h4 class="tran__title">Обмен валюты</h4>
-            <div class="form form--exchange">
-              <div class="form__row form__row--exchange form__row--currency">
-                <p class="form__label form__label--exchange">Из</p>
-                <div class="exc-currency">
-                  <input type="number" class="account__title account__title--exchange" name="exchange-from" value="BTC" placeholder="BTC">
-                  <ul class="exc-currency__list is-hide">
-                    <li class="exc-currency__item">BTC</li>
-                    <li class="exc-currency__item">ETH</li>
-                  </ul>
-                </div>
-                <p class="form__label form__label--exchange">в</p>
-                <div class="exc-currency">
-                  <input type="number" class="account__title account__title--exchange" name="exchange-from" value="ETH" placeholder="ETH">
-                  <ul class="exc-currency__list is-hide">
-                    <li class="exc-currency__item">BTC</li>
-                    <li class="exc-currency__item">ETH</li>
-                  </ul>
-                </div>
-              </div>
-              <div class="form__row form__row--exchange form__row--sum">
-                <label class="form__label form__label--sum">
-                  Сумма
-                  <input type="number" class="form__input form__input--exchange" name="sum" placeholder="Введите сумму">
-                  <span class="message-tran sum hidden">Error message</span>
-                </label>
-              </div>
-              <button class="send send--currency">
-                Обменять
-                <span class="message-tran send-tran hidden">Success message</span>
-              </button>
-            </div>
-          </div>
-          <div class="runtime bg-grey">
-            <h4 class="tran__title">Изменение курсов в реальном времени</h4>
-            <ul class="your__table">
-              <li class="your__row your__row--in">
-                <span class="your__title">BTC/ETH</span>
-                <span class="your__val your__val--runtime">6.3123545131</span>
-              </li>
-              <li class="your__row your__row--out">
-                <span class="your__title">BTC/ETH</span>
-                <span class="your__val your__val--runtime">6.3123545131</span>
-              </li>
-              <li class="your__row your__row--out">
-                <span class="your__title">BTC/ETH</span>
-                <span class="your__val your__val--runtime">6.3123545131</span>
-              </li>
-              <li class="your__row your__row--in">
-                <span class="your__title">BTC/ETH</span>
-                <span class="your__val your__val--runtime">6.3123545131</span>
-              </li>
-              <li class="your__row your__row--in">
-                <span class="your__title">BTC/ETH</span>
-                <span class="your__val your__val--runtime">6.3123545131</span>
-              </li>
-              <li class="your__row your__row--in">
-                <span class="your__title">BTC/ETH</span>
-                <span class="your__val your__val--runtime">6.3123545131</span>
-              </li>
-              <li class="your__row your__row--in">
-                <span class="your__title">BTC/ETH</span>
-                <span class="your__val your__val--runtime">6.3123545131</span>
-              </li>
-              <li class="your__row your__row--in">
-                <span class="your__title">BTC/ETH</span>
-                <span class="your__val your__val--runtime">6.3123545131</span>
-              </li>
-              <li class="your__row your__row--in">
-                <span class="your__title">BTC/ETH</span>
-                <span class="your__val your__val--runtime">6.3123545131</span>
-              </li>
-              <li class="your__row your__row--in">
-                <span class="your__title">BTC/ETH</span>
-                <span class="your__val your__val--runtime">6.3123545131</span>
-              </li>
-              <li class="your__row your__row--in">
-                <span class="your__title">BTC/ETH</span>
-                <span class="your__val your__val--runtime">6.3123545131</span>
-              </li>
-              <li class="your__row your__row--in">
-                <span class="your__title">BTC/ETH</span>
-                <span class="your__val your__val--runtime">6.3123545131</span>
-              </li>
-            </ul>
-          </div>
-        </div>
+        <div id="map" style="width: 100%; height: 728px"></div>
       </div>
     </main>
   </div>
   <script>
 
-    const historyBlocks = document.querySelectorAll('.history');
-    const paginationBlock = document.querySelector('.pagination__block');
-    const paginationPage = document.querySelectorAll('.pagination__page');
+    // const historyBlocks = document.querySelectorAll('.history');
+    // const paginationBlock = document.querySelector('.pagination__block');
+    // const paginationPage = document.querySelectorAll('.pagination__page');
 
-    paginationBlock.addEventListener('click', (e) => {
-      const currentPage = +paginationBlock.querySelector('.active').textContent;
-      const btnsShow = paginationBlock.querySelectorAll('.is-show');
-      const minBtnShow = btnsShow[0];
-      const maxBtnShow = btnsShow[btnsShow.length - 1];
+    // paginationBlock.addEventListener('click', (e) => {
+    //   const currentPage = +paginationBlock.querySelector('.active').textContent;
+    //   const btnsShow = paginationBlock.querySelectorAll('.is-show');
+    //   const minBtnShow = btnsShow[0];
+    //   const maxBtnShow = btnsShow[btnsShow.length - 1];
       
-      if(e.target.closest('.pagination__next')) {
-        if(currentPage === paginationPage.length) {
-          const paginationStepNext = paginationBlock.querySelector('.pagination__next');
-          paginationStepNext.classList.add('disable');
-          return;
-        }
-        const paginationStepPrev = paginationBlock.querySelector('.pagination__prev');
-        paginationStepPrev.classList.remove('disable');
+    //   if(e.target.closest('.pagination__next')) {
+    //     if(currentPage === paginationPage.length) {
+    //       const paginationStepNext = paginationBlock.querySelector('.pagination__next');
+    //       paginationStepNext.classList.add('disable');
+    //       return;
+    //     }
+    //     const paginationStepPrev = paginationBlock.querySelector('.pagination__prev');
+    //     paginationStepPrev.classList.remove('disable');
 
-        historyBlocks.forEach(block => {
-          block.classList.add('is-hide')
-        })
-        paginationPage.forEach(btn => {
-          btn.classList.remove('active')
-        })
-        const nextPage = document.querySelector(`.history[data-page="${currentPage + 1}"]`);
-        nextPage.classList.remove('is-hide');
+    //     historyBlocks.forEach(block => {
+    //       block.classList.add('is-hide')
+    //     })
+    //     paginationPage.forEach(btn => {
+    //       btn.classList.remove('active')
+    //     })
+    //     const nextPage = document.querySelector(`.history[data-page="${currentPage + 1}"]`);
+    //     nextPage.classList.remove('is-hide');
 
-        const nextBtn = document.querySelector(`.pagination__page[data-page="${currentPage + 1}"]`);
-        nextBtn.classList.add('active');
-        if(currentPage + 1 > +maxBtnShow.textContent) {
-          nextBtn.classList.add('is-show');
-          nextBtn.classList.remove('is-hide');
-          minBtnShow.classList.add('is-hide');
-          minBtnShow.classList.remove('is-show');
-          if(currentPage + 1 === 7) {
-            btnsShow[1].classList.add('is-hide');
-            btnsShow[1].classList.remove('is-show');
-            const paginationStepPrev = paginationBlock.querySelector('.pagination__step--prev');
-            paginationStepPrev.classList.remove('hide');
-          }
-          if(currentPage + 1 === paginationPage.length) {
-            const prevBtn = document.querySelector(`.pagination__page[data-page="${currentPage - 4}"]`);
-            prevBtn.classList.remove('is-hide');
-            prevBtn.classList.add('is-show');
-            const paginationStepNext = paginationBlock.querySelector('.pagination__step--next');
-            paginationStepNext.classList.add('hide');
-          }
-        }
-      }
+    //     const nextBtn = document.querySelector(`.pagination__page[data-page="${currentPage + 1}"]`);
+    //     nextBtn.classList.add('active');
+    //     if(currentPage + 1 > +maxBtnShow.textContent) {
+    //       nextBtn.classList.add('is-show');
+    //       nextBtn.classList.remove('is-hide');
+    //       minBtnShow.classList.add('is-hide');
+    //       minBtnShow.classList.remove('is-show');
+    //       if(currentPage + 1 === 7) {
+    //         btnsShow[1].classList.add('is-hide');
+    //         btnsShow[1].classList.remove('is-show');
+    //         const paginationStepPrev = paginationBlock.querySelector('.pagination__step--prev');
+    //         paginationStepPrev.classList.remove('hide');
+    //       }
+    //       if(currentPage + 1 === paginationPage.length) {
+    //         const prevBtn = document.querySelector(`.pagination__page[data-page="${currentPage - 4}"]`);
+    //         prevBtn.classList.remove('is-hide');
+    //         prevBtn.classList.add('is-show');
+    //         const paginationStepNext = paginationBlock.querySelector('.pagination__step--next');
+    //         paginationStepNext.classList.add('hide');
+    //       }
+    //     }
+    //   }
 
-      if(e.target.closest('.pagination__prev')) {
-        if(currentPage === 1) {
-          const paginationStepPrev = paginationBlock.querySelector('.pagination__prev');
-          paginationStepPrev.classList.add('disable');
-          return;
-        }
-        const paginationStepNext = paginationBlock.querySelector('.pagination__next');
-        paginationStepNext.classList.remove('disable');
+    //   if(e.target.closest('.pagination__prev')) {
+    //     if(currentPage === 1) {
+    //       const paginationStepPrev = paginationBlock.querySelector('.pagination__prev');
+    //       paginationStepPrev.classList.add('disable');
+    //       return;
+    //     }
+    //     const paginationStepNext = paginationBlock.querySelector('.pagination__next');
+    //     paginationStepNext.classList.remove('disable');
 
-        historyBlocks.forEach(block => {
-          block.classList.add('is-hide')
-        })
-        paginationPage.forEach(btn => {
-          btn.classList.remove('active')
-        })
-        const nextPage = document.querySelector(`.history[data-page="${currentPage - 1}"]`);
-        nextPage.classList.remove('is-hide');
+    //     historyBlocks.forEach(block => {
+    //       block.classList.add('is-hide')
+    //     })
+    //     paginationPage.forEach(btn => {
+    //       btn.classList.remove('active')
+    //     })
+    //     const nextPage = document.querySelector(`.history[data-page="${currentPage - 1}"]`);
+    //     nextPage.classList.remove('is-hide');
 
-        const nextBtn = document.querySelector(`.pagination__page[data-page="${currentPage - 1}"]`);
-        nextBtn.classList.add('active');
-        if(currentPage - 1 < +minBtnShow.textContent) {
-          nextBtn.classList.add('is-show');
-          nextBtn.classList.remove('is-hide');
-          maxBtnShow.classList.add('is-hide');
-          maxBtnShow.classList.remove('is-show');
-          if(currentPage - 1 === 1) {
-            const nextBtn = document.querySelector(`.pagination__page[data-page="${currentPage + 4}"]`);
-            nextBtn.classList.remove('is-hide');
-            nextBtn.classList.add('is-show');
-            const paginationStepPrev = paginationBlock.querySelector('.pagination__step--prev');
-            paginationStepPrev.classList.add('hide');
-          }
-          if((currentPage - 1) === (paginationPage.length - 6)) {
-            btnsShow[btnsShow.length - 2].classList.add('is-hide');
-            btnsShow[btnsShow.length - 2].classList.remove('is-show');
-            maxBtnShow.classList.add('is-hide');
-            maxBtnShow.classList.remove('is-show');
-            const paginationStepNext = paginationBlock.querySelector('.pagination__step--next');
-            paginationStepNext.classList.remove('hide');
-          }
-        }
-      }
+    //     const nextBtn = document.querySelector(`.pagination__page[data-page="${currentPage - 1}"]`);
+    //     nextBtn.classList.add('active');
+    //     if(currentPage - 1 < +minBtnShow.textContent) {
+    //       nextBtn.classList.add('is-show');
+    //       nextBtn.classList.remove('is-hide');
+    //       maxBtnShow.classList.add('is-hide');
+    //       maxBtnShow.classList.remove('is-show');
+    //       if(currentPage - 1 === 1) {
+    //         const nextBtn = document.querySelector(`.pagination__page[data-page="${currentPage + 4}"]`);
+    //         nextBtn.classList.remove('is-hide');
+    //         nextBtn.classList.add('is-show');
+    //         const paginationStepPrev = paginationBlock.querySelector('.pagination__step--prev');
+    //         paginationStepPrev.classList.add('hide');
+    //       }
+    //       if((currentPage - 1) === (paginationPage.length - 6)) {
+    //         btnsShow[btnsShow.length - 2].classList.add('is-hide');
+    //         btnsShow[btnsShow.length - 2].classList.remove('is-show');
+    //         maxBtnShow.classList.add('is-hide');
+    //         maxBtnShow.classList.remove('is-show');
+    //         const paginationStepNext = paginationBlock.querySelector('.pagination__step--next');
+    //         paginationStepNext.classList.remove('hide');
+    //       }
+    //     }
+    //   }
 
-      if(e.target.closest('.pagination__step--next')) {
-        const paginationNext = paginationBlock.querySelector('.pagination__next');
-        paginationNext.classList.add('disable');
+    //   if(e.target.closest('.pagination__step--next')) {
+    //     const paginationNext = paginationBlock.querySelector('.pagination__next');
+    //     paginationNext.classList.add('disable');
 
-        const paginationPrev = paginationBlock.querySelector('.pagination__prev');
-        paginationPrev.classList.remove('disable');
+    //     const paginationPrev = paginationBlock.querySelector('.pagination__prev');
+    //     paginationPrev.classList.remove('disable');
 
-        historyBlocks.forEach(block => {
-          block.classList.add('is-hide')
-        })
-        paginationPage.forEach(btn => {
-          btn.classList.remove('active')
-          btn.classList.remove('is-show')
-          btn.classList.add('is-hide')
-        })
-        const nextPage = document.querySelector(`.history[data-page="${paginationPage.length}"]`);
-        nextPage.classList.remove('is-hide');
+    //     historyBlocks.forEach(block => {
+    //       block.classList.add('is-hide')
+    //     })
+    //     paginationPage.forEach(btn => {
+    //       btn.classList.remove('active')
+    //       btn.classList.remove('is-show')
+    //       btn.classList.add('is-hide')
+    //     })
+    //     const nextPage = document.querySelector(`.history[data-page="${paginationPage.length}"]`);
+    //     nextPage.classList.remove('is-hide');
 
-        const nextBtn = document.querySelector(`.pagination__page[data-page="${paginationPage.length}"]`);
-        nextBtn.classList.add('active');
+    //     const nextBtn = document.querySelector(`.pagination__page[data-page="${paginationPage.length}"]`);
+    //     nextBtn.classList.add('active');
 
-        const paginationStepPrev = paginationBlock.querySelector('.pagination__step--prev');
-        paginationStepPrev.classList.remove('hide');
-        const paginationStepNext = paginationBlock.querySelector('.pagination__step--next');
-        paginationStepNext.classList.add('hide');
+    //     const paginationStepPrev = paginationBlock.querySelector('.pagination__step--prev');
+    //     paginationStepPrev.classList.remove('hide');
+    //     const paginationStepNext = paginationBlock.querySelector('.pagination__step--next');
+    //     paginationStepNext.classList.add('hide');
 
-        for(let i = 0; i < 6; i++) {
-          const nextBtn = document.querySelector(`.pagination__page[data-page="${paginationPage.length - i}"]`);
-          nextBtn.classList.add('is-show');
-          nextBtn.classList.remove('is-hide');
-        }
-      }
+    //     for(let i = 0; i < 6; i++) {
+    //       const nextBtn = document.querySelector(`.pagination__page[data-page="${paginationPage.length - i}"]`);
+    //       nextBtn.classList.add('is-show');
+    //       nextBtn.classList.remove('is-hide');
+    //     }
+    //   }
 
-      if(e.target.closest('.pagination__step--prev')) {
-        const paginationNext = paginationBlock.querySelector('.pagination__next');
-        paginationNext.classList.remove('disable');
+    //   if(e.target.closest('.pagination__step--prev')) {
+    //     const paginationNext = paginationBlock.querySelector('.pagination__next');
+    //     paginationNext.classList.remove('disable');
 
-        const paginationPrev = paginationBlock.querySelector('.pagination__prev');
-        paginationPrev.classList.add('disable');
+    //     const paginationPrev = paginationBlock.querySelector('.pagination__prev');
+    //     paginationPrev.classList.add('disable');
 
-        historyBlocks.forEach(block => {
-          block.classList.add('is-hide')
-        })
-        paginationPage.forEach(btn => {
-          btn.classList.remove('active')
-          btn.classList.remove('is-show')
-          btn.classList.add('is-hide')
-        })
-        const nextPage = document.querySelector(`.history[data-page="${1}"]`);
-        nextPage.classList.remove('is-hide');
+    //     historyBlocks.forEach(block => {
+    //       block.classList.add('is-hide')
+    //     })
+    //     paginationPage.forEach(btn => {
+    //       btn.classList.remove('active')
+    //       btn.classList.remove('is-show')
+    //       btn.classList.add('is-hide')
+    //     })
+    //     const nextPage = document.querySelector(`.history[data-page="${1}"]`);
+    //     nextPage.classList.remove('is-hide');
 
-        const nextBtn = document.querySelector(`.pagination__page[data-page="${1}"]`);
-        nextBtn.classList.add('active');
+    //     const nextBtn = document.querySelector(`.pagination__page[data-page="${1}"]`);
+    //     nextBtn.classList.add('active');
 
-        const paginationStepPrev = paginationBlock.querySelector('.pagination__step--prev');
-        paginationStepPrev.classList.add('hide');
-        const paginationStepNext = paginationBlock.querySelector('.pagination__step--next');
-        paginationStepNext.classList.remove('hide');
+    //     const paginationStepPrev = paginationBlock.querySelector('.pagination__step--prev');
+    //     paginationStepPrev.classList.add('hide');
+    //     const paginationStepNext = paginationBlock.querySelector('.pagination__step--next');
+    //     paginationStepNext.classList.remove('hide');
 
-        for(let i = 0; i < 6; i++) {
-          const nextBtn = document.querySelector(`.pagination__page[data-page="${1 + i}"]`);
-          nextBtn.classList.add('is-show');
-          nextBtn.classList.remove('is-hide');
-        }
-      }
+    //     for(let i = 0; i < 6; i++) {
+    //       const nextBtn = document.querySelector(`.pagination__page[data-page="${1 + i}"]`);
+    //       nextBtn.classList.add('is-show');
+    //       nextBtn.classList.remove('is-hide');
+    //     }
+    //   }
 
-      if(e.target.closest('.pagination__page')) {
-        if(+e.target.dataset.page === paginationPage.length) {
-          const paginationNext = paginationBlock.querySelector('.pagination__next');
-          paginationNext.classList.add('disable');
-        }
+    //   if(e.target.closest('.pagination__page')) {
+    //     if(+e.target.dataset.page === paginationPage.length) {
+    //       const paginationNext = paginationBlock.querySelector('.pagination__next');
+    //       paginationNext.classList.add('disable');
+    //     }
 
-        if(+e.target.dataset.page === 1) {
-          const paginationPrev = paginationBlock.querySelector('.pagination__prev');
-          paginationPrev.classList.remove('disable');
-        }
+    //     if(+e.target.dataset.page === 1) {
+    //       const paginationPrev = paginationBlock.querySelector('.pagination__prev');
+    //       paginationPrev.classList.remove('disable');
+    //     }
 
-        historyBlocks.forEach(block => {
-          block.classList.add('is-hide')
-        })
-        paginationPage.forEach(btn => {
-          btn.classList.remove('active')
-          btn.classList.remove('is-show')
-          btn.classList.add('is-hide')
-        })
-        const nextPage = document.querySelector(`.history[data-page="${e.target.dataset.page}"]`);
-        nextPage.classList.remove('is-hide');
+    //     historyBlocks.forEach(block => {
+    //       block.classList.add('is-hide')
+    //     })
+    //     paginationPage.forEach(btn => {
+    //       btn.classList.remove('active')
+    //       btn.classList.remove('is-show')
+    //       btn.classList.add('is-hide')
+    //     })
+    //     const nextPage = document.querySelector(`.history[data-page="${e.target.dataset.page}"]`);
+    //     nextPage.classList.remove('is-hide');
 
-        const nextBtn = document.querySelector(`.pagination__page[data-page="${e.target.dataset.page}"]`);
-        nextBtn.classList.add('active');
+    //     const nextBtn = document.querySelector(`.pagination__page[data-page="${e.target.dataset.page}"]`);
+    //     nextBtn.classList.add('active');
 
 
-        if(+e.target.dataset.page < paginationPage.length - 4) {
-          for(let i = 0; i < 5; i++) {
-            const nextBtn = document.querySelector(`.pagination__page[data-page="${+e.target.dataset.page + i}"]`);
-            nextBtn.classList.add('is-show');
-            nextBtn.classList.remove('is-hide');
-          }
+    //     if(+e.target.dataset.page < paginationPage.length - 4) {
+    //       for(let i = 0; i < 5; i++) {
+    //         const nextBtn = document.querySelector(`.pagination__page[data-page="${+e.target.dataset.page + i}"]`);
+    //         nextBtn.classList.add('is-show');
+    //         nextBtn.classList.remove('is-hide');
+    //       }
 
-          const paginationStepPrev = paginationBlock.querySelector('.pagination__step--prev');
-          paginationStepPrev.classList.remove('hide');
-          const paginationStepNext = paginationBlock.querySelector('.pagination__step--next');
-          paginationStepNext.classList.remove('hide');
-        } else {
-          for(let i = 0; i < 6; i++) {
-            const nextBtn = document.querySelector(`.pagination__page[data-page="${paginationPage.length - i}"]`);
-            nextBtn.classList.add('is-show');
-            nextBtn.classList.remove('is-hide');
-          }
+    //       const paginationStepPrev = paginationBlock.querySelector('.pagination__step--prev');
+    //       paginationStepPrev.classList.remove('hide');
+    //       const paginationStepNext = paginationBlock.querySelector('.pagination__step--next');
+    //       paginationStepNext.classList.remove('hide');
+    //     } else {
+    //       for(let i = 0; i < 6; i++) {
+    //         const nextBtn = document.querySelector(`.pagination__page[data-page="${paginationPage.length - i}"]`);
+    //         nextBtn.classList.add('is-show');
+    //         nextBtn.classList.remove('is-hide');
+    //       }
 
-          const paginationStepPrev = paginationBlock.querySelector('.pagination__step--prev');
-          paginationStepPrev.classList.remove('hide');
-          const paginationStepNext = paginationBlock.querySelector('.pagination__step--next');
-          paginationStepNext.classList.add('hide');
-        }
-      }
-    })
+    //       const paginationStepPrev = paginationBlock.querySelector('.pagination__step--prev');
+    //       paginationStepPrev.classList.remove('hide');
+    //       const paginationStepNext = paginationBlock.querySelector('.pagination__step--next');
+    //       paginationStepNext.classList.add('hide');
+    //     }
+    //   }
+    // })
 
-    const labels = [
-      'Jan',
-      'Feb',
-      'Mar',
-      'Apr',
-      'May',
-      'Jun',
-      'Jan',
-      'Feb',
-      'Mar',
-      'Apr',
-      'May',
-      'Jun',
-    ];
+    // const labels = [
+    //   'Jan',
+    //   'Feb',
+    //   'Mar',
+    //   'Apr',
+    //   'May',
+    //   'Jun',
+    //   'Jan',
+    //   'Feb',
+    //   'Mar',
+    //   'Apr',
+    //   'May',
+    //   'Jun',
+    // ];
 
-    // Math.max.apply(null, [1,34,-3,4])
+    // // Math.max.apply(null, [1,34,-3,4])
 
-    const datasetBalance = [0, 10, 5, 2, 20, 30, 20, 10, 5, 2, 20, 30];
-    const maxYBalance = Math.max.apply(null, datasetBalance);
+    // const datasetBalance = [0, 10, 5, 2, 20, 30, 20, 10, 5, 2, 20, 30];
+    // const maxYBalance = Math.max.apply(null, datasetBalance);
   
-    const dataBalance = {
-      maxBarThickness: maxYBalance,
-      labels: labels,
-      datasets: [{
-        label: '',
-        backgroundColor: 'rgb(17, 106, 204)',
-        data: datasetBalance,
-      }]
-    };
+    // const dataBalance = {
+    //   maxBarThickness: maxYBalance,
+    //   labels: labels,
+    //   datasets: [{
+    //     label: '',
+    //     backgroundColor: 'rgb(17, 106, 204)',
+    //     data: datasetBalance,
+    //   }]
+    // };
 
-    const chartAreaBorder = {
-      id: 'chartAreaBorder',
-      beforeDraw(chart, args, options) {
-        const {ctx, chartArea: {left, top, width, height}} = chart;
-        ctx.save();
-        ctx.strokeStyle = options.borderColor;
-        ctx.lineWidth = options.borderWidth;
-        ctx.setLineDash(options.borderDash || []);
-        ctx.lineDashOffset = options.borderDashOffset;
-        ctx.strokeRect(left, top, width, height);
-        ctx.restore();
-      }
-    };
+    // const chartAreaBorder = {
+    //   id: 'chartAreaBorder',
+    //   beforeDraw(chart, args, options) {
+    //     const {ctx, chartArea: {left, top, width, height}} = chart;
+    //     ctx.save();
+    //     ctx.strokeStyle = options.borderColor;
+    //     ctx.lineWidth = options.borderWidth;
+    //     ctx.setLineDash(options.borderDash || []);
+    //     ctx.lineDashOffset = options.borderDashOffset;
+    //     ctx.strokeRect(left, top, width, height);
+    //     ctx.restore();
+    //   }
+    // };
   
-    const configBalance = {
-      type: 'bar',
-      data: dataBalance,
-      options: {
-        layout: {
-          padding: {
-              right: 150,
-          }
-        },
-        aspectRatio: 1000 / 165,
-        plugins: {
-          legend: {
-            display: false,
-          },
-          chartAreaBorder: {
-            borderColor: 'rgb(0 0 0)',
-            borderWidth: 1,
-          },
-        },
-        scales: {
-          x: {
-            grid: {
-              display: false,
-            },
-            ticks: {
-              color: 'rgb(0 0 0)',
-              font: {
-                size: 20,
-                weight: 700,
-                family: 'Ubuntu'
-              },
-            }
-          },
-          y: {
-            grid: {
-              display: false,
-            },
-            borderColor: 'rgb(17, 106, 204)',
-            position: 'right',
-            ticks: {
-              min: 0,
-              max: maxYBalance,
-              stepSize: maxYBalance,
-              color: 'rgb(0 0 0)',
-              font: {
-                size: 20,
-                weight: 500,
-                family: 'Work Sans'
-              },
-              callback(value) {
-                return `   ${value}₽   `;
-              }
-            },
-          },
-        },
-      },
-      plugins: [chartAreaBorder]
-    };
+    // const configBalance = {
+    //   type: 'bar',
+    //   data: dataBalance,
+    //   options: {
+    //     layout: {
+    //       padding: {
+    //           right: 150,
+    //       }
+    //     },
+    //     aspectRatio: 1000 / 165,
+    //     plugins: {
+    //       legend: {
+    //         display: false,
+    //       },
+    //       chartAreaBorder: {
+    //         borderColor: 'rgb(0 0 0)',
+    //         borderWidth: 1,
+    //       },
+    //     },
+    //     scales: {
+    //       x: {
+    //         grid: {
+    //           display: false,
+    //         },
+    //         ticks: {
+    //           color: 'rgb(0 0 0)',
+    //           font: {
+    //             size: 20,
+    //             weight: 700,
+    //             family: 'Ubuntu'
+    //           },
+    //         }
+    //       },
+    //       y: {
+    //         grid: {
+    //           display: false,
+    //         },
+    //         borderColor: 'rgb(17, 106, 204)',
+    //         position: 'right',
+    //         ticks: {
+    //           min: 0,
+    //           max: maxYBalance,
+    //           stepSize: maxYBalance,
+    //           color: 'rgb(0 0 0)',
+    //           font: {
+    //             size: 20,
+    //             weight: 500,
+    //             family: 'Work Sans'
+    //           },
+    //           callback(value) {
+    //             return `   ${value}₽   `;
+    //           }
+    //         },
+    //       },
+    //     },
+    //   },
+    //   plugins: [chartAreaBorder]
+    // };
 
-    const myChartBalance = new Chart(
-      document.getElementById('balance-history'),
-      configBalance
-    );
+    // const myChartBalance = new Chart(
+    //   document.getElementById('balance-history'),
+    //   configBalance
+    // );
 
-    const datasetTransactionIn = [
-      30236.1626429479,
-      30286.139771283353,
-      25338.404066073697,
-      25388.381194409143,
-      25438.358322744603,
-      25488.33545108005,
-      25538.312579415502,
-      30186.18551461245,
-      30236.1626429479,
-      30286.139771283353,
-      30336.1168996188,
-      30386.09402795426
-    ];
-    const datasetTransactionOut = [
-      29936.2998729352,
-      29986.277001270646,
-      30036.2541296061,
-      30086.23125794155,
-      30136.208386276998,
-      25588.28970775095,
-      25638.2668360864,
-      25688.243964421854,
-      25738.221092757303,
-      25788.198221092756,
-      25338.404066073697,
-      25388.381194409143,
-    ];
-    const datasetTransaction = [...datasetTransactionIn].map((e,i)=> e+datasetTransactionOut[i]);
+    // const datasetTransactionIn = [
+    //   30236.1626429479,
+    //   30286.139771283353,
+    //   25338.404066073697,
+    //   25388.381194409143,
+    //   25438.358322744603,
+    //   25488.33545108005,
+    //   25538.312579415502,
+    //   30186.18551461245,
+    //   30236.1626429479,
+    //   30286.139771283353,
+    //   30336.1168996188,
+    //   30386.09402795426
+    // ];
+    // const datasetTransactionOut = [
+    //   29936.2998729352,
+    //   29986.277001270646,
+    //   30036.2541296061,
+    //   30086.23125794155,
+    //   30136.208386276998,
+    //   25588.28970775095,
+    //   25638.2668360864,
+    //   25688.243964421854,
+    //   25738.221092757303,
+    //   25788.198221092756,
+    //   25338.404066073697,
+    //   25388.381194409143,
+    // ];
+    // const datasetTransaction = [...datasetTransactionIn].map((e,i)=> e+datasetTransactionOut[i]);
 
-    const maxYTransaction = Math.max.apply(null, datasetTransaction);
-    const maxYTransactionIn = Math.max.apply(null, datasetTransactionIn);
-    const maxYTransactionOut = Math.max.apply(null, datasetTransactionOut);
+    // const maxYTransaction = Math.max.apply(null, datasetTransaction);
+    // const maxYTransactionIn = Math.max.apply(null, datasetTransactionIn);
+    // const maxYTransactionOut = Math.max.apply(null, datasetTransactionOut);
 
-    let ratioYTransaction = maxYTransactionIn;
-    const datasetTransactions = [
-        {data: datasetTransactionIn,backgroundColor: 'rgb(118 202 102)'},
-        {data: datasetTransactionOut,backgroundColor: 'rgb(253 78 93)'},
-    ]
-    if(maxYTransactionIn < maxYTransactionOut) {
-      datasetTransactions.reverse();
-      ratioYTransaction = maxYTransactionOut;
+    // let ratioYTransaction = maxYTransactionIn;
+    // const datasetTransactions = [
+    //     {data: datasetTransactionIn,backgroundColor: 'rgb(118 202 102)'},
+    //     {data: datasetTransactionOut,backgroundColor: 'rgb(253 78 93)'},
+    // ]
+    // if(maxYTransactionIn < maxYTransactionOut) {
+    //   datasetTransactions.reverse();
+    //   ratioYTransaction = maxYTransactionOut;
+    // }
+
+    // const dataTransaction = {
+    //   maxBarThickness: maxYTransaction,
+    //   labels: labels,
+    //   datasets: datasetTransactions
+    // };
+
+    // const configTransaction = {
+    //   type: 'bar',
+    //   data: dataTransaction,
+    //   options: {
+    //     layout: {
+    //       padding: {
+    //           right: 150,
+    //       }
+    //     },
+    //     aspectRatio: 1000 / 165,
+    //     plugins: {
+    //       legend: {
+    //         display: false,
+    //       },
+    //       chartAreaBorder: {
+    //         borderColor: 'rgb(0 0 0)',
+    //         borderWidth: 1,
+    //       },
+    //     },
+    //     scales: {
+    //       x: {
+    //         stacked: true,
+    //         grid: {
+    //           display: false,
+    //         },
+    //         ticks: {
+    //           color: 'rgb(0 0 0)',
+    //           font: {
+    //             size: 20,
+    //             weight: 700,
+    //             family: 'Ubuntu'
+    //           },
+    //         }
+    //       },
+    //       y: {
+    //         stacked: true,
+    //         grid: {
+    //           display: false,
+    //         },
+    //         borderColor: 'rgb(17, 106, 204)',
+    //         position: 'right',
+    //         min: 0,
+    //         max: maxYTransaction,
+    //         ticks: {
+    //           stepSize: 100,
+    //           color: 'rgb(0 0 0)',
+    //           font: {
+    //             size: 20,
+    //             weight: 500,
+    //             family: 'Work Sans'
+    //           },
+    //           callback: function (value) {
+    //             console.log(Math.ceil(value / 100));
+    //             console.log(Math.ceil(ratioYTransaction / 100));
+    //             if (
+    //               Math.ceil(value) == 0 ||
+    //               Math.ceil(value) == Math.ceil(maxYTransaction)
+    //             ) {
+    //               return `    ${Math.ceil(value)}₽    `;
+    //             }
+    //             if (
+    //               Math.ceil(value / 100) == Math.ceil(ratioYTransaction / 100)
+    //             ) {
+    //               return `    ${Math.ceil(ratioYTransaction)}₽    `;
+    //             }
+    //           },
+    //         },
+    //       },
+    //     },
+    //   },
+    //   plugins: [chartAreaBorder]
+    // };
+
+    // const myChartTransaction = new Chart(
+    //   document.getElementById('transaction-history'),
+    //   configTransaction
+    // );
+
+    ymaps.ready(init);
+    function init(){
+        var myMap = new ymaps.Map("map", {
+            center: [55.76, 37.64],
+            zoom: 10
+        });
     }
-
-    const dataTransaction = {
-      maxBarThickness: maxYTransaction,
-      labels: labels,
-      datasets: datasetTransactions
-    };
-
-    const configTransaction = {
-      type: 'bar',
-      data: dataTransaction,
-      options: {
-        layout: {
-          padding: {
-              right: 150,
-          }
-        },
-        aspectRatio: 1000 / 165,
-        plugins: {
-          legend: {
-            display: false,
-          },
-          chartAreaBorder: {
-            borderColor: 'rgb(0 0 0)',
-            borderWidth: 1,
-          },
-        },
-        scales: {
-          x: {
-            stacked: true,
-            grid: {
-              display: false,
-            },
-            ticks: {
-              color: 'rgb(0 0 0)',
-              font: {
-                size: 20,
-                weight: 700,
-                family: 'Ubuntu'
-              },
-            }
-          },
-          y: {
-            stacked: true,
-            grid: {
-              display: false,
-            },
-            borderColor: 'rgb(17, 106, 204)',
-            position: 'right',
-            min: 0,
-            max: maxYTransaction,
-            ticks: {
-              stepSize: 100,
-              color: 'rgb(0 0 0)',
-              font: {
-                size: 20,
-                weight: 500,
-                family: 'Work Sans'
-              },
-              callback: function (value) {
-                console.log(Math.ceil(value / 100));
-                console.log(Math.ceil(ratioYTransaction / 100));
-                if (
-                  Math.ceil(value) == 0 ||
-                  Math.ceil(value) == Math.ceil(maxYTransaction)
-                ) {
-                  return `    ${Math.ceil(value)}₽    `;
-                }
-                if (
-                  Math.ceil(value / 100) == Math.ceil(ratioYTransaction / 100)
-                ) {
-                  return `    ${Math.ceil(ratioYTransaction)}₽    `;
-                }
-              },
-            },
-          },
-        },
-      },
-      plugins: [chartAreaBorder]
-    };
-
-    const myChartTransaction = new Chart(
-      document.getElementById('transaction-history'),
-      configTransaction
-    );
   </script>
 </body>
 </html>
