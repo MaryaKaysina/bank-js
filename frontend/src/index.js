@@ -713,8 +713,7 @@ function accountDetailPage(accountDetailList, auth) {
     btnBack.addEventListener('click', async () => {
       try {
         chart.destroy();
-        const cards = await getAccounts(auth);
-        accountsPage(cards, auth);
+        accountsPage(auth);
       } catch (err) {
         createNotification(document.body, 'error', err.message);
       }
