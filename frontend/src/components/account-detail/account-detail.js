@@ -203,7 +203,7 @@ export function validateTransaction(input, value) {
   }
 
   if (input === 'account') {
-    if (!reg.test(value)) {
+    if (!reg.test(value) || value.length < 15) {
       throw Error(`Некорректный счёт`);
     }
     return true;

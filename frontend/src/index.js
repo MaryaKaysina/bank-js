@@ -68,15 +68,15 @@ function navigate(auth, socket = null) {
 
       if (e.target.dataset.page === 'currency') {
         try {
-          const allCurrencies = await getAllCurrencies(auth);
-          const currencies = await getCurrencies(auth);
-          currencyPage(auth, allCurrencies, currencies);
+          window.history.pushState('currency', '', '/currency');
+          currencyPage(auth);
         } catch (err) {
           createNotification(document.body, 'error', err.message);
         }
       }
       if (e.target.dataset.page === 'accounts') {
         try {
+          window.history.pushState('account', '', '/account');
           accountsPage(auth);
         } catch (err) {
           createNotification(document.body, 'error', err.message);
@@ -84,6 +84,7 @@ function navigate(auth, socket = null) {
       }
       if (e.target.dataset.page === 'atm') {
         try {
+          window.history.pushState('banks', '', '/banks');
           atmPage(auth);
         } catch (err) {
           createNotification(document.body, 'error', err.message);
@@ -91,6 +92,7 @@ function navigate(auth, socket = null) {
       }
       if (e.target.dataset.page === 'out') {
         try {
+          window.history.pushState('', '', '/');
           authorizationPage();
         } catch (err) {
           createNotification(document.body, 'error', err.message);
@@ -98,6 +100,197 @@ function navigate(auth, socket = null) {
       }
     });
   });
+}
+
+function currencyPage(auth) {
+  setChildren(document.body, currencyLoader());
+
+  setTimeout(async () => {
+    const allCurrencies = await getAllCurrencies(auth);
+    const currencies = await getCurrencies(auth);
+    setChildren(document.body, currency(allCurrencies, currencies));
+
+    const inputsCurrency = document.querySelectorAll(
+      '.account__title--exchange'
+    );
+    inputsCurrency.forEach((input) => {
+      input.addEventListener('click', (e) => {
+        inputsCurrency.forEach(() => {
+          const errMessage = document.querySelector('.send-tran');
+          errMessage.classList.remove('error');
+          errMessage.classList.add('hidden');
+        });
+        const target = e.target.dataset.change;
+        const list = document.querySelector(`[data-currency="${target}"]`);
+        const lists = document.querySelectorAll(`[data-currency]`);
+
+        lists.forEach((listCur) => {
+          if (list !== listCur) {
+            listCur.classList.add('is-hide');
+          }
+        });
+
+        if (list.classList.contains('is-hide')) {
+          list.classList.remove('is-hide');
+        } else {
+          list.classList.add('is-hide');
+        }
+
+        const items = list.querySelectorAll('.exc-currency__item');
+        items.forEach((item) => {
+          item.addEventListener('click', () => {
+            input.value = item.textContent;
+            list.classList.add('is-hide');
+          });
+        });
+      });
+    });
+
+    const sumInput = document.querySelector('[name="sum"]');
+    sumInput.addEventListener('input', () => {
+      const errMessage = document.querySelector('.send-tran');
+      errMessage.classList.remove('error');
+      errMessage.classList.add('hidden');
+    });
+
+    const btnChange = document.querySelector('.send--currency');
+    btnChange.addEventListener('click', async () => {
+      const sum = document.querySelector('[name="sum"]').value || 0;
+      const from = document.querySelector('[name="exchange-from"]').value;
+      const to = document.querySelector('[name="exchange-to"]').value;
+      const errMessage = document.querySelector('.send-tran');
+
+      try {
+        validateCurrencyChange(sum, from, to);
+        const body = {};
+        body.from = from;
+        body.to = to;
+        body.amount = sum;
+        const currencies = await fetchCurrencyBuy(auth, body);
+        currencyPage(auth, allCurrencies, currencies);
+        setTimeout(() => {
+          createNotification(
+            document.body,
+            'success',
+            'Обмен успешно выполнен!'
+          );
+        }, 500);
+      } catch (err) {
+        errMessage.classList.add('error');
+        errMessage.textContent = err.message;
+        errMessage.classList.remove('hidden');
+      }
+    });
+
+    const socket = new WebSocket('ws://localhost:3000/currency-feed/');
+
+    socket.onmessage = function (event) {
+      const currencyFeed = JSON.parse(event.data);
+      if (currencyFeed.type === 'EXCHANGE_RATE_CHANGE') {
+        const block = document.querySelector('.runtime .your__table');
+        const li = el('li', { class: `your__row` });
+
+        li.innerHTML = `<span class="your__title">
+            ${currencyFeed.from}/${currencyFeed.to}
+          </span>
+          <span class="your__val your__val--runtime">
+            ${currencyFeed.rate}
+          </span>`;
+
+        if (currencyFeed.change == -1) {
+          li.classList.add('your__row--out');
+        } else {
+          li.classList.add('your__row--in');
+        }
+        const rows = document.querySelectorAll('.runtime .your__row');
+        if (rows.length > 20) {
+          block.children[0].remove();
+        }
+        block.append(li);
+      }
+    };
+
+    socket.onerror = function (error) {
+      console.log(`[error] ${error.message}`);
+    };
+
+    navigate(auth, socket);
+  }, 300);
+}
+
+function atmPage(auth) {
+  setChildren(document.body, atmLoader());
+  const script = document.querySelector(
+    "[src='https://api-maps.yandex.ru/2.1/?apikey=ead4f884-175f-4708-88bc-af0468c3ce39&lang=ru_RU']"
+  );
+
+  if (!script) {
+    const script = el('script', {
+      src: 'https://api-maps.yandex.ru/2.1/?apikey=ead4f884-175f-4708-88bc-af0468c3ce39&lang=ru_RU',
+      type: 'text/javascript',
+    });
+    const head = document.querySelector('head');
+    head.append(script);
+    script.addEventListener('load', () => {
+      setTimeout(async () => {
+        setChildren(document.body, atm());
+
+        const atms = await getAtm(auth);
+        // eslint-disable-next-line no-undef
+        ymaps.ready(init);
+        function init() {
+          // eslint-disable-next-line no-undef
+          const myMap = new ymaps.Map('map', {
+            center: [55.76, 37.64],
+            zoom: 10,
+          });
+
+          atms.forEach((atm) => {
+            // eslint-disable-next-line no-undef
+            const myPlacemark = new ymaps.GeoObject({
+              geometry: {
+                type: 'Point',
+                coordinates: [atm.lat, atm.lon],
+              },
+            });
+
+            myMap.geoObjects.add(myPlacemark);
+          });
+        }
+
+        navigate(auth);
+      }, 300);
+    })
+  } else {
+    setTimeout(async () => {
+      setChildren(document.body, atm());
+
+      const atms = await getAtm(auth);
+      // eslint-disable-next-line no-undef
+      ymaps.ready(init);
+      function init() {
+        // eslint-disable-next-line no-undef
+        const myMap = new ymaps.Map('map', {
+          center: [55.76, 37.64],
+          zoom: 10,
+        });
+
+        atms.forEach((atm) => {
+          // eslint-disable-next-line no-undef
+          const myPlacemark = new ymaps.GeoObject({
+            geometry: {
+              type: 'Point',
+              coordinates: [atm.lat, atm.lon],
+            },
+          });
+
+          myMap.geoObjects.add(myPlacemark);
+        });
+      }
+
+      navigate(auth);
+    }, 300);
+  }
 }
 
 function historyPage(accountDetailList, auth) {
@@ -601,7 +794,8 @@ function historyPage(accountDetailList, auth) {
     btnBack.addEventListener('click', async () => {
       try {
         const cards = await getAccountDetail(auth, accountDetailList.account);
-        accountDetailPage(cards, auth);
+        accountDetailPage(auth, cards.account);
+        window.history.pushState('account-detail', '', `/account-detail/${cards.account}`);
       } catch (err) {
         createNotification(document.body, 'error', err.message);
       }
@@ -611,10 +805,11 @@ function historyPage(accountDetailList, auth) {
   }, 300);
 }
 
-function accountDetailPage(accountDetailList, auth) {
+function accountDetailPage(auth, accountId) {
   setChildren(document.body, accountDetailLoader());
 
-  setTimeout(() => {
+  setTimeout(async () => {
+    const accountDetailList = await getAccountDetail(auth, accountId);
     const accountDetailData = accountDetail(accountDetailList);
     setChildren(document.body, accountDetailData.app);
 
@@ -714,6 +909,7 @@ function accountDetailPage(accountDetailList, auth) {
       try {
         chart.destroy();
         accountsPage(auth);
+        window.history.pushState('account', '', '/account');
       } catch (err) {
         createNotification(document.body, 'error', err.message);
       }
@@ -728,7 +924,7 @@ function accountDetailPage(accountDetailList, auth) {
     const btn = document.querySelector('.send');
     const btnError = document.querySelector('.send .message-tran');
 
-    const local = localStorage.getItem('accounts');
+    const local = localStorage.getItem('accounts-coin-bank');
     const localTransferAccounts = local ? local.split(',') : [];
     const accountList = document.querySelector('.account__list');
     accountList.innerHTML = '';
@@ -746,7 +942,16 @@ function accountDetailPage(accountDetailList, auth) {
         acc.addEventListener('click', () => {
           accountInput.value = acc.textContent;
           accountList.classList.add('is-hide');
-          accountInput.classList.add('valid');
+          try {
+            validateTransaction('account', accountInput.value.trim());
+            accountInput.classList.add('valid');
+            accountErr.classList.remove('error');
+            accountErr.classList.add('hidden');
+          } catch (err) {
+            accountErr.classList.add('error');
+            accountErr.textContent = err.message;
+            accountErr.classList.remove('hidden');
+          }
         });
       });
 
@@ -762,6 +967,17 @@ function accountDetailPage(accountDetailList, auth) {
     }
 
     accountInput.addEventListener('change', () => {
+      try {
+        validateTransaction('account', accountInput.value.trim());
+        accountInput.classList.add('valid');
+      } catch (err) {
+        accountErr.classList.add('error');
+        accountErr.textContent = err.message;
+        accountErr.classList.remove('hidden');
+      }
+    });
+
+    accountInput.addEventListener('paste', () => {
       try {
         validateTransaction('account', accountInput.value.trim());
         accountInput.classList.add('valid');
@@ -814,24 +1030,26 @@ function accountDetailPage(accountDetailList, auth) {
           to: accountInput.value.trim(),
           amount: sumInput.value.trim(),
         };
+        console.log(transaction.to);
         try {
           const card = await fetchTransferFunds(auth, transaction);
-          const local = localStorage.getItem('accounts');
+          console.log(card);
+          const local = localStorage.getItem('accounts-coin-bank');
           const localTransferAccounts = local ? local.split(',') : [];
 
           if (localTransferAccounts.indexOf(transaction.to) == -1) {
             localTransferAccounts.push(transaction.to);
           }
 
-          localStorage.setItem('accounts', localTransferAccounts);
-          accountDetailPage(card, auth);
+          localStorage.setItem('accounts-coin-bank', localTransferAccounts);
+          accountDetailPage(auth, card.account);
           setTimeout(() => {
             createNotification(
               document.body,
               'success',
               'Перевод успешно выполнен!'
             );
-          }, 300);
+          }, 500);
         } catch (err) {
           btnError.classList.add('error');
           btnError.textContent = err.message;
@@ -875,7 +1093,7 @@ function accountsPage(auth, sort = '') {
             'success',
             'Новый счёт успешно создан!'
           );
-        }, 300);
+        }, 500);
       } catch (err) {
         createNotification(document.body, 'error', err.message);
       }
@@ -922,8 +1140,8 @@ function accountsPage(auth, sort = '') {
         const accountId =
           btn.parentElement.querySelector('.number').textContent;
         try {
-          const accountDetail = await getAccountDetail(auth, accountId);
-          accountDetailPage(accountDetail, auth);
+          accountDetailPage(auth, accountId);
+          window.history.pushState('account-detail', '', `/account-detail/${accountId}`);
         } catch (err) {
           createNotification(document.body, 'error', err.message);
         }
@@ -935,7 +1153,39 @@ function accountsPage(auth, sort = '') {
 }
 
 function authorizationPage() {
-  setChildren(document.body, authorizationLoader());
+  if(window.location.pathname === '/account') {
+    const localToken = localStorage.getItem('token-coin-bank');
+    if(localToken) {
+      accountsPage(localToken);
+    }
+  }
+
+  if(window.location.pathname.includes('/account-detail')) {
+    const accountId = window.location.pathname.substring(window.location.pathname.lastIndexOf('/') + 1);
+    const localToken = localStorage.getItem('token-coin-bank');
+    if(localToken) {
+      accountDetailPage(localToken, accountId);
+    }
+  }
+
+  if(window.location.pathname === '/currency') {
+    const localToken = localStorage.getItem('token-coin-bank');
+    if(localToken) {
+      currencyPage(localToken);
+    }
+  }
+
+  if(window.location.pathname === '/banks') {
+    const localToken = localStorage.getItem('token-coin-bank');
+    if(localToken) {
+      atmPage(localToken);
+    }
+  }
+
+  if(window.location.pathname === '/') {
+    localStorage.setItem('token-coin-bank', '');
+    setChildren(document.body, authorizationLoader());
+  }
 
   setTimeout(() => {
     setChildren(document.body, authorization());
@@ -999,6 +1249,8 @@ function authorizationPage() {
         try {
           const token = await fetchAuth(auth);
           accountsPage(token.token);
+          localStorage.setItem('token-coin-bank', token.token);
+          window.history.pushState('account', '', '/account');
         } catch (err) {
           btnError.classList.add('error');
           btnError.textContent = err.message;
@@ -1006,159 +1258,6 @@ function authorizationPage() {
         }
       }
     });
-  }, 300);
-}
-
-function currencyPage(auth, allCurrencies, currencies) {
-  setChildren(document.body, currencyLoader());
-
-  setTimeout(() => {
-    setChildren(document.body, currency(allCurrencies, currencies));
-
-    const inputsCurrency = document.querySelectorAll(
-      '.account__title--exchange'
-    );
-    inputsCurrency.forEach((input) => {
-      input.addEventListener('click', (e) => {
-        inputsCurrency.forEach(() => {
-          const errMessage = document.querySelector('.send-tran');
-          errMessage.classList.remove('error');
-          errMessage.classList.add('hidden');
-        });
-        const target = e.target.dataset.change;
-        const list = document.querySelector(`[data-currency="${target}"]`);
-        const lists = document.querySelectorAll(`[data-currency]`);
-
-        lists.forEach((listCur) => {
-          if (list !== listCur) {
-            listCur.classList.add('is-hide');
-          }
-        });
-
-        if (list.classList.contains('is-hide')) {
-          list.classList.remove('is-hide');
-        } else {
-          list.classList.add('is-hide');
-        }
-
-        const items = list.querySelectorAll('.exc-currency__item');
-        items.forEach((item) => {
-          item.addEventListener('click', () => {
-            input.value = item.textContent;
-            list.classList.add('is-hide');
-          });
-        });
-      });
-    });
-
-    const sumInput = document.querySelector('[name="sum"]');
-    sumInput.addEventListener('input', () => {
-      const errMessage = document.querySelector('.send-tran');
-      errMessage.classList.remove('error');
-      errMessage.classList.add('hidden');
-    });
-
-    const btnChange = document.querySelector('.send--currency');
-    btnChange.addEventListener('click', async () => {
-      const sum = document.querySelector('[name="sum"]').value || 0;
-      const from = document.querySelector('[name="exchange-from"]').value;
-      const to = document.querySelector('[name="exchange-to"]').value;
-      const errMessage = document.querySelector('.send-tran');
-
-      try {
-        validateCurrencyChange(sum, from, to);
-        const body = {};
-        body.from = from;
-        body.to = to;
-        body.amount = sum;
-        const currencies = await fetchCurrencyBuy(auth, body);
-        currencyPage(auth, allCurrencies, currencies);
-      } catch (err) {
-        errMessage.classList.add('error');
-        errMessage.textContent = err.message;
-        errMessage.classList.remove('hidden');
-      }
-    });
-
-    const socket = new WebSocket('ws://localhost:3000/currency-feed/');
-
-    socket.onmessage = function (event) {
-      const currencyFeed = JSON.parse(event.data);
-      if (currencyFeed.type === 'EXCHANGE_RATE_CHANGE') {
-        const block = document.querySelector('.runtime .your__table');
-        const li = el('li', { class: `your__row` });
-
-        li.innerHTML = `<span class="your__title">
-            ${currencyFeed.from}/${currencyFeed.to}
-          </span>
-          <span class="your__val your__val--runtime">
-            ${currencyFeed.rate}
-          </span>`;
-
-        if (currencyFeed.change == -1) {
-          li.classList.add('your__row--out');
-        } else {
-          li.classList.add('your__row--in');
-        }
-        const rows = document.querySelectorAll('.runtime .your__row');
-        if (rows.length > 20) {
-          block.children[0].remove();
-        }
-        block.append(li);
-      }
-    };
-
-    socket.onerror = function (error) {
-      console.log(`[error] ${error.message}`);
-    };
-
-    navigate(auth, socket);
-  }, 300);
-}
-
-function atmPage(auth) {
-  setChildren(document.body, atmLoader());
-  const script = document.querySelector(
-    "[src='https://api-maps.yandex.ru/2.1/?apikey=ead4f884-175f-4708-88bc-af0468c3ce39&lang=ru_RU']"
-  );
-
-  if (!script) {
-    const script = el('script', {
-      src: 'https://api-maps.yandex.ru/2.1/?apikey=ead4f884-175f-4708-88bc-af0468c3ce39&lang=ru_RU',
-      type: 'text/javascript',
-    });
-    const head = document.querySelector('head');
-    head.append(script);
-  }
-
-  setTimeout(async () => {
-    setChildren(document.body, atm());
-
-    const atms = await getAtm(auth);
-
-    // eslint-disable-next-line no-undef
-    ymaps.ready(init);
-    function init() {
-      // eslint-disable-next-line no-undef
-      const myMap = new ymaps.Map('map', {
-        center: [55.76, 37.64],
-        zoom: 10,
-      });
-
-      atms.forEach((atm) => {
-        // eslint-disable-next-line no-undef
-        const myPlacemark = new ymaps.GeoObject({
-          geometry: {
-            type: 'Point',
-            coordinates: [atm.lat, atm.lon],
-          },
-        });
-
-        myMap.geoObjects.add(myPlacemark);
-      });
-    }
-
-    navigate(auth);
   }, 300);
 }
 
